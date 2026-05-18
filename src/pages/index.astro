@@ -739,8 +739,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <script>
   if (window.self !== window.top) {
-    import('@sanity/visual-editing').then(({ enableOverlays }) => {
-      enableOverlays();
+    import('@sanity/visual-editing').then(({ enableVisualEditing }) => {
+      enableVisualEditing();
     });
   }
 </script>
