@@ -228,8 +228,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <section class="hero" id="top">
   <div class="hero-content">
     <span class="eyebrow hero-eyebrow">{H.eyebrow}</span>
-    <h1>{H.h1_normal}<em>{H.h1_italic}</em></h1>
-    <h2>{H.h2}</h2>
+    <h1>{H.h1_normal}<em>{H.h1_italic}</em>{H.h1_suite||' au cœur de Fribourg'}</h1>
+    <h2 set:html={H.h2}></h2>
     <div class="hero-ctas">
       <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{H.cta1} <span class="arrow"></span></a>
       <a href="#universes" class="btn btn-ghost">{H.cta2}</a>
@@ -257,7 +257,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="universes-header reveal">
       <span class="eyebrow">{SU.eyebrow}</span>
       <h2 class="section-title" set:html={SU.titre}></h2>
-      <p>{SU.intro}</p>
+      <p set:html={SU.intro}></p>
     </div>
     <div class="universes-grid">
       {(SU.cartes||FB.sectionUniverses.cartes).map((c:any) => (
@@ -294,7 +294,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <span class="eyebrow">{SO.eyebrow}</span>
         <h2>{SO.h2_normal}<br><span set:html={SO.h2_italic}></span></h2>
         <p class="lead">{SO.lead}</p>
-        <p>{SO.corps}</p>
+        <p set:html={SO.corps}></p>
         <ul class="service-steps">
           {(SO.steps||FB.sectionOnglerie.steps).map((s:any)=>(
             <li><strong>{s.label}</strong>{s.texte}</li>
@@ -353,7 +353,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <span class="eyebrow">{SP.eyebrow}</span>
         <h2>{SP.h2_normal}<br><span set:html={SP.h2_italic}></span></h2>
         <p class="lead">{SP.lead}</p>
-        <p>{SP.corps}</p>
+        <p set:html={SP.corps}></p>
         <ul class="service-steps">
           {(SP.steps||FB.sectionPedicure.steps).map((s:any)=>(
             <li><strong>{s.label}</strong>{s.texte}</li>
@@ -402,7 +402,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <span class="eyebrow">{SC.eyebrow}</span>
         <h2>{SC.h2_normal}<br><span set:html={SC.h2_italic}></span></h2>
         <p class="lead">{SC.lead}</p>
-        <p>{SC.corps}</p>
+        <p set:html={SC.corps}></p>
         <ul class="service-steps">
           {(SC.steps||FB.sectionCoiffure.steps).map((s:any)=>(
             <li><strong>{s.label}</strong>{s.texte}</li>
@@ -486,7 +486,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <span class="eyebrow">{SS.eyebrow}</span>
         <h2 set:html={SS.h2}></h2>
         <p class="lead">{SS.lead}</p>
-        <p>{SS.corps}</p>
+        <p set:html={SS.corps}></p>
       </div>
     </div>
   </div>

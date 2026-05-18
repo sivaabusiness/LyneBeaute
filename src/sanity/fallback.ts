@@ -29,7 +29,7 @@ export const FB = {
     h1_normal: "Votre ",
     h1_italic: "parenthèse de sérénité",
     h1_suite: " au cœur de Fribourg",
-    h2: "Franchissez le seuil de mon boudoir. Jocelyne signe chaque pose, chaque tresse et chaque soin avec la précision d'une orfèvre et la chaleur d'une confidente.",
+    h2: "Franchissez le seuil de mon boudoir. Jocelyne signe chaque <a href=\"#onglerie\" class=\"text-link\">pose</a>, chaque <a href=\"#coiffure\" class=\"text-link\">tresse</a> et chaque <a href=\"#pedicure\" class=\"text-link\">soin</a> avec la précision d'une orfèvre et la chaleur d'une confidente.",
     cta1: "Réserver votre instant",
     cta2: "Découvrir mes rituels",
     badge: "Lâcher-prise · Avec ou sans RDV",
@@ -39,7 +39,7 @@ export const FB = {
   sectionUniverses: {
     eyebrow: "Vos instants sur-mesure",
     titre: "Mes Rituels <em>signature</em>",
-    intro: "Je vous invite à découvrir une maîtrise globale de votre bien-être : l'art délicat de l'onglerie, le soin profond de la pédicure et la virtuosité de la coiffure. Une triple expertise, pour une sérénité totale.",
+    intro: "Je vous invite à découvrir une maîtrise globale de votre bien-être : l'art délicat de l'<a href=\"#onglerie\" class=\"text-link\" style=\"color:var(--bg-warm);\">onglerie</a>, le soin profond de la <a href=\"#pedicure\" class=\"text-link\" style=\"color:var(--bg-warm);\">pédicure</a> et la virtuosité de la <a href=\"#coiffure\" class=\"text-link\" style=\"color:var(--bg-warm);\">coiffure</a>. Une triple expertise, pour une sérénité totale.",
     cartes: [
       { tagline: "Rituel I · L'Élégance des mains", h3: "L'Onglerie", desc: "Pose gel, acrylique, vernis semi-permanent. Laissez vos mains révéler votre personnalité avec une tenue irréprochable.", lien: "#onglerie", image: "img/pro4.webp" },
       { tagline: "Rituel II · La Douceur des pieds", h3: "La Pédicure", desc: "Soin profond, gommage et massage relaxant. Une parenthèse de légèreté absolue pour vous ancrer dans le présent.", lien: "#pedicure", image: "img/pedicure.webp" },
@@ -51,7 +51,7 @@ export const FB = {
     h2_normal: "Sublimez vos mains avec",
     h2_italic: "une signature qui <em>dure.</em>",
     lead: "Le luxe du gain de temps : vos mains restent impeccables pendant des semaines. Fini les retouches quotidiennes, vous vous réveillez déjà prête, avec une confiance absolue.",
-    corps: "Dans mon écrin, je ne fais pas simplement les ongles. Je compose. Pose gel, acrylique, semi-permanent ou nail art : chaque technique est exécutée avec la rigueur d'une joaillière et la patience d'une miniaturiste, dans le plus profond respect de votre ongle naturel. Vous repartirez avec des mains qui parlent pour vous.",
+    corps: "Dans mon <a href=\"#le-salon\" class=\"text-link\">écrin</a>, je ne fais pas simplement les ongles. Je compose. Pose gel, acrylique, semi-permanent ou nail art : chaque technique est exécutée avec la rigueur d'une joaillière et la patience d'une miniaturiste, dans le plus profond respect de votre ongle naturel. Vous repartirez avec des mains qui parlent pour vous.",
     steps: [
       { label: "1. Le Diagnostic :", texte: "J'analyse la nature de votre ongle pour choisir la technique idéale." },
       { label: "2. Le Soin Signature :", texte: "Une pose exécutée avec des produits haut de gamme et la précision d'une orfèvre." },
@@ -75,7 +75,7 @@ export const FB = {
     h2_normal: "Lâchez prise. Je prends",
     h2_italic: "soin de <em>chaque détail.</em>",
     lead: "Le luxe du gain de temps : une mise en beauté des pieds qui dure, pour un sentiment de pureté et de perfection à chaque instant.",
-    corps: "Vos pieds vous portent chaque jour ; ils méritent ma plus belle attention. Je prends le temps de les préparer avec minutie, de les hydrater en profondeur, et de libérer vos tensions par un modelage doux. Que vous optiez pour la robustesse du gel, l'éclat d'un vernis semi-permanent, ou simplement une Pédicure Spa, vous repartirez avec une sensation de légèreté absolue.",
+    corps: "Vos pieds vous portent chaque jour ; ils méritent ma plus belle attention. Je prends le temps de les préparer avec minutie, de les hydrater en profondeur, et de libérer vos tensions par un modelage doux. Que vous optiez pour la robustesse du gel, l'éclat d'un vernis semi-permanent, ou simplement une <a href=\"#universes\" class=\"text-link\">Pédicure Spa</a>, vous repartirez avec une sensation de légèreté absolue.",
     steps: [
       { label: "1. Le Diagnostic :", texte: "Écoute bienveillante de vos besoins (hydratation, callosités, esthétique)." },
       { label: "2. Le Soin Signature :", texte: "Pédicure spa avec gommage, massage relaxant et produits premiums." },
@@ -92,7 +92,7 @@ export const FB = {
     h2_normal: "Révélez votre nature,",
     h2_italic: "en toute <em>confiance.</em>",
     lead: "Le luxe du gain de temps : une coiffure protectrice, un tissage ou un lissage parfaitement exécuté vous libère l'esprit. Vous êtes prête à conquérir votre journée.",
-    corps: "Dans mon atelier, la coiffure est avant tout un échange. Je vous écoute, j'analyse avec bienveillance la nature de vos cheveux, et nous décidons ensemble de ce qui vous sublimera le mieux.",
+    corps: "Dans mon atelier, la coiffure est avant tout un échange. Je vous écoute, j'analyse avec bienveillance la nature de vos cheveux, et nous décidons ensemble de ce qui vous sublimera le mieux. Découvrez l'atmosphère de mon <a href=\"#le-salon\" class=\"text-link\">salon dédié</a>.",
     steps: [
       { label: "1. Le Diagnostic :", texte: "Étude de votre cuir chevelu et de la texture de vos cheveux." },
       { label: "2. Le Soin Signature :", texte: "Exécution minutieuse sans douleur, avec des mèches et produits de haute qualité." },
@@ -115,8 +115,8 @@ export const FB = {
     eyebrow: "L'Institut · La Confidente",
     h2: "Jocelyne, l'artisan de votre <em>beauté.</em>",
     lead: "Plus qu'un institut, je vous ouvre les portes d'un lieu où le geste est sûr, l'écoute attentive, et le sourire sincère.",
-    corps1: "Mon parcours de 18 ans témoigne de cette quête d'excellence : <strong>2 années de formation certifiée</strong> (incluant un certificat anglais en pédicure), <strong>7 ans dédiés à sublimer vos ongles</strong>, et <strong>11 ans d'expertise dans l'art de la coiffure afro</strong>.",
-    corps2: "Mon secret de fabrication ? L'alliance d'une élégance intemporelle et de l'utilisation exclusive de produits haut de gamme. Mais au-delà de la technique, mon obsession absolue est votre bien-être : ma plus belle réussite est de m'assurer que vous ressortiez de l'institut avec le sourire aux lèvres.",
+    corps1: "Mon parcours de 18 ans témoigne de cette quête d'excellence : <strong>2 années de formation certifiée</strong> (incluant un certificat anglais en pédicure), <strong>7 ans dédiés à sublimer vos <a href=\"#onglerie\" class=\"text-link\">ongles</a></strong>, et <strong>11 ans d'expertise dans l'art de la <a href=\"#coiffure\" class=\"text-link\">coiffure afro</a></strong>.",
+    corps2: "Mon secret de fabrication ? L'alliance d'une élégance intemporelle et de l'utilisation exclusive de produits haut de gamme. Mais au-delà de la technique, mon obsession absolue est votre bien-être : ma plus belle réussite est de m'assurer que vous ressortiez de l'institut avec le sourire aux lèvres. Découvrez toutes les réponses à vos doutes dans <a href=\"#faq\" class=\"text-link\">mes questions fréquentes</a>.",
     signature: "— Jocelyne",
     stats: [
       { num: "18", suffix: "+", label: "Années d'expertise" },
@@ -131,7 +131,7 @@ export const FB = {
     eyebrow: "Mon Espace · Fribourg",
     h2: "Un boudoir dédié à votre <em>lâcher-prise.</em>",
     lead: "L'Institut Lyne Beauty a été conçu pour vous offrir bien plus qu'une simple prestation esthétique : c'est une parenthèse hors du temps. Dans une atmosphère chaleureuse aux nuances poudrées, chaque détail de décoration et d'aménagement a été pensé pour votre confort absolu.",
-    corps: "De mes postes de coiffure baignés de lumière à mes fauteuils de pédicure spa massants, l'espace allie équipements de pointe et ambiance relaxante. Que ce soit pour une pose rapide ou une transformation complète de plusieurs heures, vous êtes ici chez vous. Asseyez-vous, détendez-vous, je m'occupe de tout.",
+    corps: "De mes postes de <a href=\"#coiffure\" class=\"text-link\">coiffure</a> baignés de lumière à mes fauteuils de <a href=\"#pedicure\" class=\"text-link\">pédicure spa</a> massants, l'espace allie équipements de pointe et ambiance relaxante. Que ce soit pour une pose rapide ou une transformation complète de plusieurs heures, vous êtes ici chez vous. Asseyez-vous, détendez-vous, je m'occupe de tout.",
     tag: "L'Écrin",
     images: ["img/salon.webp", "img/coiffure-salon.webp", "img/pedicure-salon.webp"],
   },
@@ -151,7 +151,7 @@ export const FB = {
   sectionFaq: {
     eyebrow: "Questions Douces",
     h2: "Votre sérénité,<br>avant de <em>franchir la porte.</em>",
-    intro: "J'ai rassemblé ici de quoi apaiser toutes vos interrogations sur mes rituels, mes tarifs et mon fonctionnement. Si vous avez d'autres doutes, n'hésitez pas à me contacter.",
+    intro: "J'ai rassemblé ici de quoi apaiser toutes vos interrogations sur mes rituels, mes tarifs et mon fonctionnement. Si vous avez d'autres doutes, n'hésitez pas à me contacter via mes <a href=\"#contact\" class=\"text-link\">coordonnées</a>.",
     cta: "M'écrire directement",
   },
   sectionReservation: {
