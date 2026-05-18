@@ -1,0 +1,748 @@
+---
+import { getAllSiteData } from '../sanity/client';
+import { FB } from '../sanity/fallback';
+
+let sd: any = {};
+try { sd = await getAllSiteData(); } catch(e) { /* fallback */ }
+
+const G   = sd.global_       || FB.global_;
+const NAV = sd.nav            || FB.nav;
+const FT  = sd.footer_        || FB.footer_;
+const H   = sd.hero           || FB.hero;
+const SU  = sd.sectionUniverses  || FB.sectionUniverses;
+const SO  = sd.sectionOnglerie   || FB.sectionOnglerie;
+const SP  = sd.sectionPedicure   || FB.sectionPedicure;
+const SC  = sd.sectionCoiffure   || FB.sectionCoiffure;
+const SA  = sd.sectionAbout      || FB.sectionAbout;
+const SS  = sd.sectionSalon      || FB.sectionSalon;
+const SR  = sd.sectionReviews    || FB.sectionReviews;
+const SG  = sd.sectionGallery    || FB.sectionGallery;
+const SF  = sd.sectionFaq        || FB.sectionFaq;
+const SRES = sd.sectionReservation || FB.sectionReservation;
+const SCON = sd.sectionContact   || FB.sectionContact;
+const HOR = sd.horaires          || FB.horaires;
+
+const allP = sd.prestations?.length ? sd.prestations : null;
+const ongP = allP ? allP.filter((p:any)=>p.categorie==='onglerie') : FB.prestations.onglerie;
+const pedP = allP ? allP.filter((p:any)=>p.categorie==='pedicure') : FB.prestations.pedicure;
+const coiP = allP ? allP.filter((p:any)=>p.categorie==='coiffure') : FB.prestations.coiffure;
+const avisData = sd.avis?.length ? sd.avis : FB.avis;
+const faqData  = sd.faqs?.length ? sd.faqs : FB.faqs;
+
+// Slides avis groupés par 2
+const avisSlides: any[][] = [];
+for(let i=0; i<avisData.length; i+=2) avisSlides.push(avisData.slice(i,i+2));
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{G.meta_title || `${G.nom} — ${G.tagline}`}</title>
+  <meta name="description" content={G.meta_desc} />
+  <meta name="keywords" content="Onglerie Fribourg, Institut Lyne Beauty, Pose de gel Fribourg, Coiffure Fribourg, Tresses Fribourg" />
+  <meta name="robots" content="index, follow" />
+  <link rel="icon" type="image/webp" href={`${base}/img/logo-lyne.webp`}>
+  <link rel="canonical" href="https://lynebeauty.ch/" />
+  <link rel="preload" as="image" href={`${base}/img/hero1.webp`} type="image/webp" fetchpriority="high">
+  <meta property="og:type" content="business.business" />
+  <meta property="og:title" content={`${G.nom} — Fribourg`} />
+  <meta property="og:description" content={G.meta_desc} />
+  <meta property="og:locale" content="fr_CH" />
+  <link href="https://meetings.brevo.com/assets/styles/popup.css" rel="stylesheet" />
+  <script src="https://meetings.brevo.com/assets/libs/popup.min.js" type="text/javascript" defer></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#FFFFFF;--bg-pure:#FFFFFF;--bg-warm:#F5EDE6;--bg-rose:#F2D9D1;--ink:#1A1614;--ink-soft:#4A413C;--ink-mute:#8A7E76;--signature:#D9796E;--signature-deep:#B85A4F;--gold:#C9A961;--gold-light:#E5D2A0;--line:#E8DED5;--ff-display:'Playfair Display',serif;--ff-body:'Montserrat',sans-serif;--radius-img:12px;--radius-card:16px;--shadow-soft:0 4px 30px rgba(26,22,20,.06);--shadow-deep:0 30px 80px rgba(26,22,20,.12);--t-fast:.3s cubic-bezier(.4,0,.2,1);--t-med:.6s cubic-bezier(.25,.46,.45,.94);--t-slow:1.2s cubic-bezier(.16,1,.3,1)}
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:var(--ff-body);font-weight:300;font-size:18px;line-height:1.6;color:var(--ink);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}img{max-width:100%;display:block;height:auto}a{color:inherit;text-decoration:none;transition:color var(--t-fast)}button{font-family:inherit;cursor:pointer;border:none;background:none}::selection{background:var(--signature);color:#fff}
+    .text-link{color:var(--signature-deep);border-bottom:1px solid var(--line);font-weight:400;transition:all var(--t-fast)}.text-link:hover{color:var(--signature);border-bottom-color:var(--signature)}
+    h1,h2,h3,h4{font-family:var(--ff-display);font-weight:400;letter-spacing:-.01em;color:var(--ink)}
+    .eyebrow{font-family:var(--ff-body);font-size:11px;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:var(--signature);display:inline-flex;align-items:center;gap:12px}.eyebrow::before{content:'';width:32px;height:1px;background:var(--signature)}
+    .section-title{font-size:clamp(2.5rem,5.5vw,4.5rem);line-height:1.05;font-weight:300;letter-spacing:-.02em}.section-title em{font-style:italic;font-weight:300;color:var(--signature)}
+    .container{width:100%;max-width:1380px;margin:0 auto;padding:0 32px}section{position:relative}
+    .promo-banner{background:var(--ink);color:var(--gold-light);text-align:center;padding:10px 20px;font-size:12px;letter-spacing:.08em;position:absolute;top:0;left:0;width:100%;z-index:101;font-family:var(--ff-body)}.promo-banner strong{font-weight:600;color:#fff}
+    .nav{position:fixed;top:38px;left:0;right:0;z-index:100;padding:22px 0;transition:all var(--t-med);background:transparent}.nav.scrolled{top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);padding:14px 0;border-bottom:1px solid var(--line)}
+    .nav-inner{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:1380px;margin:0 auto;padding:0 20px;gap:24px;flex-wrap:nowrap}
+    .mobile-cta-wrapper{display:none}
+    .logo{font-family:var(--ff-display);font-size:28px;font-weight:400;letter-spacing:.04em;display:flex;align-items:center;gap:15px;text-decoration:none;color:inherit;flex-shrink:0;white-space:nowrap}.logo img{height:60px;width:auto;display:block}.logo em{font-style:italic;color:var(--signature)}
+    .nav-links{display:flex;align-items:center;gap:40px;list-style:none;flex-shrink:0}.nav-links a{font-size:13px;font-weight:400;letter-spacing:.08em;text-transform:uppercase;position:relative;padding:4px 0;white-space:nowrap}.nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:1px;background:var(--signature);transition:width var(--t-fast)}.nav-links a:hover::after{width:100%}
+    .nav-cta{background:var(--signature);color:var(--bg-pure);padding:12px 24px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;border-radius:100px;transition:all var(--t-fast);cursor:pointer}.nav-cta:hover{background:var(--signature-deep);transform:translateY(-2px)}
+    .burger{display:none;width:28px;height:20px;position:relative}.burger span{position:absolute;width:100%;height:1px;background:var(--ink);transition:all var(--t-fast)}.burger span:nth-child(1){top:4px}.burger span:nth-child(2){top:50%}.burger span:nth-child(3){bottom:4px}.burger.open span:nth-child(1){top:50%;transform:rotate(45deg)}.burger.open span:nth-child(2){opacity:0}.burger.open span:nth-child(3){bottom:auto;top:50%;transform:rotate(-45deg)}
+    .hero{min-height:100vh;display:grid;grid-template-columns:1.1fr 1fr;grid-template-rows:1fr auto;align-items:center;padding:140px 0 0;position:relative;overflow:hidden}.hero::before{content:'';position:absolute;top:20%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,var(--bg-rose) 0%,transparent 70%);filter:blur(60px);opacity:.5;z-index:-1}
+    .hero-content{padding:0 32px 0 80px;max-width:720px;animation:fadeInUp 1.2s var(--t-slow) both}.hero-eyebrow{margin-bottom:32px}
+    .hero h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;font-weight:300;letter-spacing:-.02em;margin-bottom:24px}.hero h1 em{font-style:italic;font-weight:300;color:var(--signature);display:block}
+    .hero h2{font-family:var(--ff-body);font-size:clamp(1rem,1.5vw,1.15rem);font-weight:300;color:var(--ink-soft);line-height:1.7;max-width:580px;margin-bottom:40px}
+    .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+    .btn{display:inline-flex;justify-content:center;align-items:center;gap:12px;padding:18px 32px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:500;border-radius:100px;transition:all var(--t-fast);cursor:pointer;border:1px solid transparent;text-align:center}
+    .btn-primary{background:var(--ink);color:var(--bg-pure)}.btn-primary:hover{background:var(--signature);transform:translateY(-3px);box-shadow:0 12px 30px rgba(217,121,110,.3)}
+    .btn-ghost{background:transparent;color:var(--ink);border-color:var(--ink)}.btn-ghost:hover{background:var(--ink);color:var(--bg-pure)}
+    .btn .arrow{width:16px;height:1px;background:currentColor;position:relative}.btn .arrow::after{content:'';position:absolute;right:0;top:-3px;width:7px;height:7px;border-top:1px solid currentColor;border-right:1px solid currentColor;transform:rotate(45deg)}
+    .hero-visual{position:relative;height:70vh;min-height:560px;padding-right:32px;animation:fadeIn 1.5s var(--t-slow) both}
+    .hero-frame{width:100%;height:100%;border-radius:var(--radius-card);overflow:hidden;position:relative;box-shadow:var(--shadow-deep);background-color:var(--bg-warm)}
+    .hero-frame.fade-carousel img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity 1s ease-in-out,transform 8s ease;z-index:0}.hero-frame.fade-carousel img.active{opacity:1;z-index:1}.hero:hover .hero-frame.fade-carousel img.active{transform:scale(1.08)}
+    .hero-badge{position:absolute;bottom:24px;left:24px;background:var(--bg-pure);padding:14px 22px;border-radius:100px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.04em;z-index:2}
+    .hero-badge .pulse{width:8px;height:8px;background:#4ade80;border-radius:50%;position:relative}.hero-badge .pulse::after{content:'';position:absolute;inset:-4px;border-radius:50%;background:#4ade80;opacity:.4;animation:pulse 2s infinite}
+    .hero-marquee{margin-top:24px;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;grid-column:1/-1;width:100%}
+    .marquee-track{display:flex;gap:60px;white-space:nowrap;animation:marquee 35s linear infinite;font-family:var(--ff-display);font-style:italic;font-size:18px;color:var(--ink-soft);width:max-content}
+    .marquee-track>span{display:inline-flex;align-items:center;gap:60px;padding-right:60px}.marquee-track .star{color:var(--signature);font-style:normal}
+    .service-detail{padding:140px 0;position:relative;overflow:hidden}.service-detail.alt{background:var(--bg-warm)}
+    .service-hero{display:grid;grid-template-columns:1fr 1.05fr;gap:80px;align-items:center;margin-bottom:100px}
+    .service-detail.alt .service-hero{direction:rtl}.service-detail.alt .service-hero>*{direction:ltr}
+    .service-img{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--radius-card);overflow:hidden;box-shadow:var(--shadow-deep);max-width:420px;margin:0 auto}
+    .service-img.fade-carousel img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out;z-index:0}.service-img.fade-carousel img.active{opacity:1;z-index:1}
+    .service-img-tag{position:absolute;top:24px;left:24px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:10px 18px;border-radius:100px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;z-index:2}
+    .service-text .eyebrow{margin-bottom:24px}.service-text h2{font-size:clamp(2.5rem,5vw,4rem);line-height:1.05;font-weight:300;margin-bottom:28px}.service-text h2 em{font-style:italic;color:var(--signature)}.service-text .lead{font-size:17px;line-height:1.7;color:var(--ink-soft);margin-bottom:24px}.service-text p{font-size:15px;line-height:1.8;color:var(--ink-soft);margin-bottom:16px}
+    .service-steps{margin-top:24px;list-style:none;padding:0}.service-steps li{font-size:15px;color:var(--ink-soft);margin-bottom:12px;line-height:1.7;position:relative;padding-left:20px}.service-steps li strong{color:var(--ink);font-weight:500;margin-right:5px}.service-steps li::before{content:'✦';color:var(--signature);font-size:12px;position:absolute;left:0;top:2px}
+    .pricing-block{background:var(--bg-pure);border:1px solid var(--line);border-top:3px solid var(--signature);padding:60px;border-radius:8px;position:relative}.service-detail.alt .pricing-block{background:var(--bg)}
+    .pricing-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;padding-bottom:24px;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:20px}.pricing-header h3{font-size:32px;font-weight:400;font-style:italic}.pricing-note{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+    .pricing-filters{display:flex;gap:12px;margin-bottom:32px;flex-wrap:wrap}.filter-btn{padding:10px 20px;border:1px solid var(--line);border-radius:100px;font-size:13px;font-weight:500;color:var(--ink-soft);transition:all var(--t-fast)}.filter-btn:hover{border-color:var(--signature);color:var(--signature)}.filter-btn.active{background:var(--signature);border-color:var(--signature);color:var(--bg-pure)}
+    .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0 60px}
+    .pricing-subtitle{grid-column:1/-1;font-family:var(--ff-display);font-style:italic;font-size:22px;margin:32px 0 16px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink)}
+    .price-row{display:flex;align-items:baseline;padding:18px 12px;border-bottom:1px dotted var(--line);gap:16px;transition:all var(--t-fast);border-radius:6px;cursor:pointer}.price-row:last-child{border-bottom:none}.price-row:hover{background-color:var(--bg-warm);transform:translateX(4px);border-bottom-color:transparent}
+    .price-row .name{font-family:var(--ff-display);font-size:19px;font-weight:400;flex:1;letter-spacing:.01em}.price-row .name small{font-family:var(--ff-body);font-size:12px;font-weight:300;color:var(--ink-mute);display:block;margin-top:2px}
+    .price-row .dots{flex:0 1 auto;border-bottom:1px dotted var(--ink-mute);height:1em;min-width:20px}.price-row .price{font-family:var(--ff-display);font-size:22px;font-weight:500;color:var(--signature);white-space:nowrap;display:flex;align-items:center}
+    .price-row.hidden{display:none!important}
+    .service-cta{margin-top:48px;display:flex;gap:16px;flex-wrap:wrap}
+    .about{padding:140px 0;background:var(--bg-warm);position:relative;overflow:hidden}
+    .about-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:100px;align-items:center}
+    .about-image{position:relative;max-width:500px;margin:0 auto;width:100%}.about-image .main{position:relative;width:100%;aspect-ratio:4/5;border-radius:var(--radius-card);overflow:hidden;box-shadow:var(--shadow-deep)}
+    .about-image.fade-carousel .main img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1s ease-in-out;z-index:0}.about-image.fade-carousel .main img.active{opacity:1;z-index:1}
+    .about-image .badge-circle{position:absolute;bottom:24px;right:24px;width:150px;height:150px;background:var(--ink);color:var(--bg-pure);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 12px 30px rgba(0,0,0,.2);z-index:2}
+    .about-image .badge-circle .num{font-size:44px;line-height:1;color:var(--signature);font-family:var(--ff-display);font-style:italic}.about-image .badge-circle .lbl{font-family:var(--ff-body);font-size:9px;letter-spacing:.2em;text-transform:uppercase;margin-top:6px;padding:0 12px}
+    .about-content .eyebrow{margin-bottom:28px}.about-content h2{margin-bottom:36px}.about-content .lead{font-family:var(--ff-display);font-size:22px;font-style:italic;line-height:1.5;color:var(--ink-soft);margin-bottom:28px;font-weight:300}.about-content p{font-size:16px;line-height:1.8;color:var(--ink-soft);margin-bottom:20px}.about-content .signature{margin-top:36px;font-family:var(--ff-display);font-style:italic;font-size:24px;color:var(--signature)}
+    .about-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:48px;padding-top:36px;border-top:1px solid var(--line)}.stat-num{font-family:var(--ff-display);font-size:42px;line-height:1;color:var(--ink);font-weight:300}.stat-num em{font-style:italic;color:var(--signature)}.stat-lbl{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-top:8px}
+    .universes{padding:140px 0;background:var(--signature);color:var(--bg-pure);position:relative;overflow:hidden}.universes::before{content:'';position:absolute;top:-50%;left:-10%;width:80%;height:200%;background:radial-gradient(ellipse,rgba(255,255,255,.08),transparent 60%);pointer-events:none}
+    .universes .eyebrow{color:rgba(255,255,255,.7)}.universes .eyebrow::before{background:rgba(255,255,255,.7)}
+    .universes-header{text-align:center;margin-bottom:80px;position:relative}.universes-header .eyebrow{justify-content:center;margin-bottom:24px}.universes-header .eyebrow::before{display:none}.universes-header h2{color:var(--bg-pure);font-style:italic;font-weight:300}.universes-header h2 em{color:var(--gold-light)}.universes-header h2::before{content:'✺';display:block;font-size:18px;margin-bottom:16px;color:var(--gold-light)}.universes-header p{max-width:680px;margin:24px auto 0;color:rgba(255,255,255,.85);font-size:16px;line-height:1.7}
+    .universes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;max-width:1200px;margin:0 auto}
+    .universe-card{text-align:center;cursor:pointer;transition:transform var(--t-med)}.universe-card:hover{transform:translateY(-12px)}
+    .universe-arch{width:80%;max-width:300px;aspect-ratio:4/5;margin:0 auto 28px;border-radius:var(--radius-img);overflow:hidden;border:1px solid rgba(255,255,255,.2);position:relative}
+    .universe-arch img{width:100%;height:100%;object-fit:cover;transition:transform 1s var(--t-slow)}.universe-card:hover .universe-arch img{transform:scale(1.08)}.universe-arch::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.2))}
+    .universe-card h3{color:var(--bg-pure);font-size:28px;font-style:italic;font-weight:300;margin-bottom:8px}.universe-card .tagline{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-light);margin-bottom:16px}.universe-card .desc{color:rgba(255,255,255,.85);font-size:14px;line-height:1.7;max-width:320px;margin:0 auto 24px}
+    .universe-link{display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--bg-pure);border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:4px;transition:all var(--t-fast)}.universe-link:hover{color:var(--gold-light);border-color:var(--gold-light)}
+    .review-arrow{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;background:var(--bg-pure);color:var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;z-index:10;transition:all var(--t-fast);box-shadow:var(--shadow-soft);cursor:pointer}.review-arrow:hover{background:var(--signature);color:var(--bg-pure)}.review-arrow.prev{left:10px}.review-arrow.next{right:10px}
+    .reviews{padding:140px 0;background:var(--ink);color:var(--bg-pure);position:relative;overflow:hidden}.reviews-header{text-align:center;margin-bottom:70px}.reviews-header .eyebrow{color:var(--gold-light);justify-content:center}.reviews-header .eyebrow::before{background:var(--gold-light)}.reviews-header h2{color:var(--bg-pure);font-style:italic;font-weight:300}.reviews-header h2 em{color:var(--signature)}
+    .reviews-rating{display:inline-flex;align-items:center;gap:14px;margin-top:20px;font-size:13px;color:rgba(255,255,255,.7)}.stars{display:inline-flex;gap:3px;color:var(--gold);font-size:16px}
+    .reviews-carousel{position:relative;max-width:1200px;margin:0 auto;overflow:hidden}.reviews-track{display:flex;transition:transform .9s cubic-bezier(.65,0,.35,1)}.review-slide{min-width:100%;display:flex;justify-content:center;gap:32px;padding:0 20px}
+    .review-card{flex:1 1 calc(50% - 16px);max-width:calc(50% - 16px);width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);padding:40px;border-radius:8px;transition:all var(--t-fast);backdrop-filter:blur(10px)}.review-card:hover{background:rgba(255,255,255,.07);border-color:var(--signature);transform:translateY(-4px)}
+    .review-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:20px}.review-text{font-family:var(--ff-display);font-size:19px;line-height:1.55;font-style:italic;color:rgba(255,255,255,.92);font-weight:300;margin-bottom:28px}
+    .review-author{display:flex;align-items:center;gap:14px;padding-top:20px;border-top:1px solid rgba(255,255,255,.1)}.review-avatar{width:44px;height:44px;border-radius:50%;background:var(--signature);display:flex;align-items:center;justify-content:center;font-family:var(--ff-display);font-size:18px;font-style:italic;color:var(--bg-pure)}.review-meta strong{display:block;font-size:14px;font-weight:500}.review-meta span{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:2px;display:inline-block}
+    .reviews-dots{display:flex;justify-content:center;gap:10px;margin-top:40px}.dot{width:8px;height:8px;background:rgba(255,255,255,.2);border-radius:50%;transition:all var(--t-fast);cursor:pointer}.dot.active{background:var(--signature);width:28px;border-radius:4px}
+    .gallery{padding:140px 0}.gallery-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;flex-wrap:wrap;gap:24px}.gallery-header h2{font-size:clamp(2.2rem,4.5vw,3.5rem);font-weight:300;line-height:1.05}.gallery-header h2 em{font-style:italic;color:var(--signature)}.gallery-handle{font-family:var(--ff-display);font-style:italic;font-size:18px;color:var(--ink-soft)}
+    .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.gallery-grid>a{position:relative;overflow:hidden;border-radius:var(--radius-img);display:block;background:var(--bg-warm);aspect-ratio:4/5}.gallery-grid img{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--t-slow)}
+    .insta-overlay{position:absolute;inset:0;background:linear-gradient(135deg,transparent 40%,rgba(217,121,110,.4));opacity:0;transition:opacity var(--t-fast);display:flex;align-items:center;justify-content:center}.insta-overlay svg{width:48px;height:48px;color:var(--bg-pure);opacity:0;transform:translateY(20px);transition:all var(--t-med)}.gallery-grid>a:hover img{transform:scale(1.06)}.gallery-grid>a:hover .insta-overlay{opacity:1}.gallery-grid>a:hover .insta-overlay svg{opacity:1;transform:translateY(0)}
+    .faq{padding:140px 0;background:var(--bg-pure)}.faq-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:flex-start}.faq-aside{position:sticky;top:120px}.faq-aside h2{margin-bottom:24px}.faq-aside h2 em{color:var(--signature);font-style:italic}.faq-aside p{color:var(--ink-soft);margin-bottom:32px;line-height:1.7}
+    .faq-item{border-bottom:1px solid var(--line);padding:28px 0}.faq-item:first-child{border-top:1px solid var(--line)}.faq-question{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;font-family:var(--ff-display);font-size:22px;font-weight:400;color:var(--ink);cursor:pointer;gap:24px;transition:color var(--t-fast)}.faq-question:hover{color:var(--signature)}
+    .faq-toggle{width:36px;height:36px;border-radius:50%;background:var(--bg-pure);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all var(--t-fast);position:relative}.faq-toggle::before,.faq-toggle::after{content:'';position:absolute;background:var(--ink);transition:transform var(--t-fast)}.faq-toggle::before{width:12px;height:1px}.faq-toggle::after{width:1px;height:12px}
+    .faq-item.open .faq-toggle{background:var(--signature);border-color:var(--signature)}.faq-item.open .faq-toggle::before,.faq-item.open .faq-toggle::after{background:var(--bg-pure)}.faq-item.open .faq-toggle::after{transform:rotate(90deg)}
+    .faq-answer{max-height:0;overflow:hidden;padding-top:0;transition:max-height .4s cubic-bezier(0,1,0,1),padding-top .4s ease}.faq-item.open .faq-answer{max-height:1000px;padding-top:20px;transition:max-height .6s ease-in-out,padding-top .4s ease}.faq-answer p{color:var(--ink-soft);line-height:1.7;font-size:15px}
+    .contact{padding:140px 0;position:relative}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}.contact-info h2{margin-bottom:32px}.contact-info h2 em{color:var(--signature);font-style:italic}.contact-info .lead{font-family:var(--ff-display);font-style:italic;font-size:22px;line-height:1.5;color:var(--ink-soft);margin-bottom:40px}
+    .contact-item{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid var(--line)}.contact-item:last-child{border:none}.contact-icon{width:44px;height:44px;border-radius:50%;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--signature)}.contact-icon svg{width:18px;height:18px}.contact-detail .label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-mute);margin-bottom:4px}.contact-detail .value{font-family:var(--ff-display);font-size:19px;color:var(--ink)}
+    .contact-hours{background:var(--bg-warm);padding:48px;border-radius:16px;position:relative;overflow:hidden}.contact-hours h3{font-size:28px;font-style:italic;margin-bottom:32px;position:relative}
+    .hours-row{display:flex;justify-content:space-between;padding:16px 0;border-bottom:1px dotted var(--line);position:relative}.hours-row:last-of-type{border:none}.hours-row .day{font-weight:500;font-size:14px;letter-spacing:.04em}.hours-row .time{font-family:var(--ff-display);font-size:17px;color:var(--ink-soft)}.hours-row.closed .time{color:var(--signature);font-style:italic}
+    .map-wrap{margin-top:100px;border-radius:16px;overflow:hidden;height:420px;box-shadow:var(--shadow-soft);filter:grayscale(.3) contrast(1.05)}.map-wrap iframe{width:100%;height:100%;border:none}
+    .reservation-section{padding:140px 0;background:var(--bg-warm)}.reservation-container{max-width:900px;margin:0 auto;background:var(--bg-pure);padding:60px;border-radius:var(--radius-card);box-shadow:var(--shadow-deep)}.reservation-header{text-align:center;margin-bottom:40px}.reservation-header h2{font-size:3rem;margin-bottom:16px}
+    .modal{position:fixed;inset:0;background:rgba(26,22,20,.7);backdrop-filter:blur(8px);z-index:200;opacity:0;visibility:hidden;transition:all var(--t-med);display:flex;align-items:center;justify-content:center;padding:20px}.modal.open{opacity:1;visibility:visible}.modal-content{background:var(--bg);max-width:880px;width:100%;max-height:90vh;overflow-y:auto;border-radius:16px;padding:60px;position:relative;transform:scale(.95);transition:transform var(--t-med)}.modal.open .modal-content{transform:scale(1)}.modal-close{position:absolute;top:24px;right:24px;width:44px;height:44px;border-radius:50%;background:var(--bg-warm);display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--ink);transition:all var(--t-fast);cursor:pointer}.modal-close:hover{background:var(--signature);color:white;transform:rotate(90deg)}
+    footer{background:var(--ink);color:var(--bg-pure);padding:80px 0 32px;position:relative}.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}.footer-brand .logo{display:flex;align-items:center;justify-content:flex-start;gap:12px;text-decoration:none;color:var(--bg-pure);font-family:var(--ff-display);font-size:24px;margin-bottom:20px}.footer-brand .logo img{height:50px;width:auto;display:block}.footer-brand .logo em{font-style:italic;color:var(--signature)}.footer-brand p{color:rgba(255,255,255,.6);font-size:14px;line-height:1.7;max-width:320px}
+    footer h4{color:var(--bg-pure);font-size:14px;letter-spacing:.16em;text-transform:uppercase;font-family:var(--ff-body);font-weight:500;margin-bottom:24px}footer ul{list-style:none}footer ul li{margin-bottom:12px}footer ul a{color:rgba(255,255,255,.6);font-size:14px}footer ul a:hover{color:var(--signature)}
+    .social-links{display:flex;gap:12px;margin-top:20px}.social-links a{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;transition:all var(--t-fast)}.social-links a:hover{background:var(--signature);border-color:var(--signature);transform:translateY(-2px)}.social-links svg{width:16px;height:16px}
+    .footer-bottom{padding-top:32px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:12px;color:rgba(255,255,255,.5);letter-spacing:.04em}
+    .whatsapp-float{position:fixed;bottom:28px;right:28px;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:99;box-shadow:0 12px 30px rgba(37,211,102,.4);transition:all var(--t-fast);animation:floatYsimple 3s ease-in-out infinite}.whatsapp-float:hover{transform:scale(1.1)}.whatsapp-float svg{width:30px;height:30px;fill:white}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes pulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.5);opacity:0}}@keyframes floatYsimple{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .5s ease-out,transform .5s ease-out}.reveal.visible{opacity:1;transform:translateY(0)}
+    @media(max-width:1100px){.hero{grid-template-columns:1fr;grid-template-rows:auto auto auto;padding-top:160px}.hero-visual{height:60vh;min-height:480px;padding:0 32px;margin-top:60px}.about-grid,.faq-grid,.contact-grid{grid-template-columns:1fr;gap:60px}.service-hero{grid-template-columns:1fr;gap:50px}.service-detail.alt .service-hero{direction:ltr}.faq-aside{position:static}.footer-grid{grid-template-columns:1fr 1fr;gap:40px}.universes-grid{grid-template-columns:1fr;gap:40px}.about-stats{gap:20px}.nav-links{gap:24px}.nav-links a{font-size:12px}}
+    @media(max-width:980px){.nav-links{position:fixed;top:0;right:-100%;width:80%;height:100vh;background:var(--bg);flex-direction:column;justify-content:center;gap:32px;transition:right var(--t-med);box-shadow:var(--shadow-deep);padding:40px;z-index:101}.nav-links.open{right:0}.burger{display:block;z-index:102}.nav-cta{display:none}}
+    @media(max-width:768px){.container{padding:0 20px}.nav-links{position:fixed;top:0;right:-100%;width:80%;height:100vh;background:var(--bg);flex-direction:column;justify-content:center;gap:32px;transition:right var(--t-med);box-shadow:var(--shadow-deep);padding:40px}.nav-links.open{right:0}.burger{display:block;z-index:102}.nav-cta{display:none}.hero h1{font-size:2rem}.hero-content{padding:0 20px}.hero-visual{height:auto;aspect-ratio:4/5;min-height:unset;margin-top:40px;padding:0}.btn{width:100%;justify-content:center}.nav-inner{padding:0 24px}.mobile-cta-wrapper{display:block;margin-top:24px;width:100%}.mobile-cta-wrapper .btn{width:100%;justify-content:center}.pricing-block{padding:32px 24px}.pricing-grid{grid-template-columns:1fr;gap:0}.price-row{flex-direction:column;gap:8px;border-bottom:1px solid var(--line);padding:20px 0}.price-row .dots{display:none}.price-row .price{font-size:20px;align-self:flex-start}.universes-grid{grid-template-columns:1fr;gap:50px}.about-stats{grid-template-columns:1fr;gap:32px;text-align:center}.review-slide{flex-direction:column;gap:20px;padding:0 8px}.review-card{max-width:100%;padding:28px}.reviews-carousel{padding-bottom:70px}.review-arrow{top:auto;bottom:0;transform:none;width:44px;height:44px}.review-arrow.prev{left:25%}.review-arrow.next{right:25%}.reviews-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);margin-top:0}.gallery-grid{grid-template-columns:1fr 1fr;gap:12px}.reservation-container{padding:32px 20px}.footer-grid{grid-template-columns:1fr;gap:40px}.modal-content{padding:40px 24px;margin-top:30px}.contact-hours{padding:32px 24px}.promo-banner{position:absolute;font-size:11px;padding:10px}.nav{padding:12px 0;position:fixed;top:54px}.nav.scrolled{padding:12px 0;position:fixed;top:0}.logo{font-size:22px}.logo img{height:40px}section{padding:80px 0}.hero{padding-top:180px}}
+  </style>
+  <script define:vars={{agendaPrestations: {
+    'premiere-pose-gel':'https://meet.brevo.com/institut-lynebeauty/premiere-pose-gel/',
+    'remplissage-gel-4-5-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-gel-4-5-sem/',
+    'remplissage-acrylique-4-5-sem':'https://meet.brevo.com/institut-lynebeauty/premiere-pose-gel-copie',
+    'remplissage-gel-tardif-6-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-acrylique-tardif-6-sem',
+    'premiere-pose-acrylique':'https://meet.brevo.com/institut-lynebeauty/premiere-pose-acrylique/',
+    'remplissage-acrylique-tardif-6-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-gel-tardif-6-sem',
+    'manucure-simple':'https://meet.brevo.com/institut-lynebeauty/manucure-simple/',
+    'vernis-semi-permanent-mains':'https://meet.brevo.com/institut-lynebeauty/vernis-semi-permanent-mains',
+    'gel-acrylique-pieds':'https://meet.brevo.com/institut-lynebeauty/pedicure-gel-ou-acrylique-pieds',
+    'pedicure-spa-simple':'https://meet.brevo.com/institut-lynebeauty/onglerie-manucure-simple-copy',
+    'pedicure-spa-semi-permanent':'https://meet.brevo.com/institut-lynebeauty/pedicure-pedicure-spa-semi-permanent/',
+    'pedicure-gel-acrylique':'https://meet.brevo.com/institut-lynebeauty/pedicure-pedicure-spa-simple-copy',
+    'vernis-semi-permanent-pieds':'https://meet.brevo.com/institut-lynebeauty/pedicure-vernis-semi-permanent-pieds-45-chf',
+    'barrels-twists':'https://meet.brevo.com/institut-lynebeauty/coiffure-barrels-twists-fribourg-des-100-chf',
+    'deux-tresses-sans':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf',
+    'deux-tresses-ext':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf',
+    'couleur-racine':'https://meet.brevo.com/institut-lynebeauty/coiffure-coloration-racines-fribourg-des-60-chf',
+    'brushing':'https://meet.brevo.com/institut-lynebeauty/coiffure-brushing-des-50-chf',
+    'shampooing':'https://meet.brevo.com/institut-lynebeauty/coiffure-shampooing-des-20-chf',
+    'tresses-draid':'https://meet.brevo.com/institut-lynebeauty/tresses-draid-avec-extensions/',
+    'tresses-plaquees':'https://meet.brevo.com/institut-lynebeauty/coiffure-tresses-plaquees/',
+    'tresses-plaquees-avec-ext':'https://meet.brevo.com/institut-lynebeauty/3coiffure-tresses-plaquees-avec-extension-des-100-chf',
+    'vanilles-twists':'https://meet.brevo.com/institut-lynebeauty/coiffure-vanilles-ou-twists',
+    'vanilles-twists-ext':'https://meet.brevo.com/institut-lynebeauty/3coiffure-vanilles-ou-twists-avec-extension-des-120-chf',
+    'entretien-locks':'https://meet.brevo.com/institut-lynebeauty/coiffure-entretien-locks-rasta/',
+    'pose-tissage':'https://meet.brevo.com/institut-lynebeauty/coiffure-pose-de-tissage-complete/',
+    'chignon':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf-copie',
+    'pose-perruque':'https://meet.brevo.com/institut-lynebeauty/coiffure-pose-perruque/',
+    'defrisage':'https://meet.brevo.com/institut-lynebeauty/coiffure-defrisage/',
+    'coloration-brushing':'https://meet.brevo.com/institut-lynebeauty/coiffure-coloration-amp-brushing/',
+    'retrait-depose':'https://meet.brevo.com/institut-lynebeauty/retrait-amp-depose-douce/',
+    'general':'https://meet.brevo.com/institut-lynebeauty/'
+  }}}>
+    window.agendaPrestations = agendaPrestations;
+    window.reserverSoin = function(nomSoin) {
+      const url = agendaPrestations[nomSoin];
+      if(url && window.BrevoBookingPage) BrevoBookingPage.initStaticButton({url});
+    };
+  </script>
+</head>
+<body>
+
+<div class="promo-banner" id="promoBanner" set:html={G.annonce}></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <img src={`${base}/img/logo-lyne.webp`} alt={`Logo ${G.nom}`} width="140" height="140">
+      <span>Institut Lyne<em>Beauty</em></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      {(NAV.liens || FB.nav.liens).map((l:any) => (
+        <li><a href={l.ancre}>{l.label}</a></li>
+      ))}
+      <li class="mobile-cta-wrapper">
+        <a href={G.lien_reservation} class="btn btn-primary" onclick="document.getElementById('burger').click(); reserverSoin('general'); return false;">{NAV.cta || FB.nav.cta}</a>
+      </li>
+    </ul>
+    <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="nav-cta">{NAV.cta_court || 'Réserver'}</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ══ HERO ═══════════════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-content">
+    <span class="eyebrow hero-eyebrow">{H.eyebrow}</span>
+    <h1>{H.h1_normal}<em>{H.h1_italic}</em></h1>
+    <h2>{H.h2}</h2>
+    <div class="hero-ctas">
+      <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{H.cta1} <span class="arrow"></span></a>
+      <a href="#universes" class="btn btn-ghost">{H.cta2}</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-frame fade-carousel">
+      {(H.images || FB.hero.images).map((src:string, i:number) => (
+        <img src={`${base}/${src}`} alt={`Intérieur Institut Lyne Beauty ${i+1}`} loading={i===0?'eager':'lazy'} width="800" height="1000" class={i===1?'active':''} />
+      ))}
+    </div>
+    <div class="hero-badge"><span class="pulse"></span>{H.badge}</div>
+  </div>
+  <div class="hero-marquee">
+    <div class="marquee-track">
+      <span set:html={(H.marquee||FB.hero.marquee).split('✦').join('<span class="star">✦</span>')}></span>
+      <span set:html={(H.marquee||FB.hero.marquee).split('✦').join('<span class="star">✦</span>')}></span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ UNIVERS ════════════════════════════════════════════════════════════ -->
+<section class="universes" id="universes">
+  <div class="container">
+    <div class="universes-header reveal">
+      <span class="eyebrow">{SU.eyebrow}</span>
+      <h2 class="section-title" set:html={SU.titre}></h2>
+      <p>{SU.intro}</p>
+    </div>
+    <div class="universes-grid">
+      {(SU.cartes||FB.sectionUniverses.cartes).map((c:any) => (
+        <article class="universe-card reveal" onclick={`document.querySelector('${c.lien}').scrollIntoView({behavior:'smooth'})`}>
+          <div class="universe-arch fade-carousel">
+            <img src={`${base}/${c.image}`} class="active" alt={c.h3} loading="lazy" width="600" height="750" />
+          </div>
+          <div class="tagline">{c.tagline}</div>
+          <h3>{c.h3}</h3>
+          <p class="desc">{c.desc}</p>
+          <a href={c.lien} class="universe-link">Découvrir <span class="arrow"></span></a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ══ ONGLERIE ══════════════════════════════════════════════════════════ -->
+<section class="service-detail" id="onglerie">
+  <div class="container">
+    <div class="service-hero">
+      <div class="service-visual-column">
+        <div class="service-img reveal fade-carousel">
+          {(SO.images||FB.sectionOnglerie.images).map((src:string,i:number)=>(
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Onglerie ${i+1}`} loading="lazy" width="600" height="750" />
+          ))}
+          <div class="service-img-tag">Rituel I</div>
+        </div>
+        <div class="reveal" style="margin-top:24px;text-align:center;">
+          <a href={G.instagram} target="_blank" rel="noopener" class="btn btn-ghost" style="width:100%;justify-content:center;display:inline-flex;">{SO.insta_cta||'Voir mes modèles d\'ongles'} <span class="arrow"></span></a>
+        </div>
+      </div>
+      <div class="service-text reveal">
+        <span class="eyebrow">{SO.eyebrow}</span>
+        <h2>{SO.h2_normal}<br><span set:html={SO.h2_italic}></span></h2>
+        <p class="lead">{SO.lead}</p>
+        <p>{SO.corps}</p>
+        <ul class="service-steps">
+          {(SO.steps||FB.sectionOnglerie.steps).map((s:any)=>(
+            <li><strong>{s.label}</strong>{s.texte}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-block reveal">
+      <div class="pricing-header">
+        <h3>{SO.titre_tarifs}</h3>
+        <span class="pricing-note">{SO.note_tarifs}</span>
+      </div>
+      <div class="pricing-filters">
+        {(SO.filters||FB.sectionOnglerie.filters).map((f:any,i:number)=>(
+          <button class={`filter-btn${i===0?' active':''}`} onclick={`filtrerOnglerie('${f.val}',event)`}>{f.label}</button>
+        ))}
+      </div>
+      <div class="pricing-grid" id="onglerie-grid">
+        {ongP.filter((p:any)=>p.cat!=='all').map((p:any)=>(
+          <div class="price-row" data-category={p.cat||p.categorie_filtre} onclick={`reserverSoin('${p.id||''}')`}>
+            <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
+            <div class="dots"></div>
+            <div class="price">{p.prix} <span style="font-size:11px;margin-left:8px;color:var(--signature);">✺</span></div>
+          </div>
+        ))}
+        <div class="pricing-subtitle" data-category="all">Suppléments & Retraits</div>
+        {ongP.filter((p:any)=>p.cat==='all').map((p:any)=>(
+          <div class="price-row" data-category="all">
+            <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
+            <div class="dots"></div>
+            <div class="price">{p.prix}</div>
+          </div>
+        ))}
+      </div>
+      <div class="service-cta">
+        <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{SO.cta1} <span class="arrow"></span></a>
+        <button class="btn btn-ghost" onclick="openModal('modal-onglerie')">{SO.cta2}</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ PÉDICURE ══════════════════════════════════════════════════════════ -->
+<section class="service-detail alt" id="pedicure" style="background:var(--bg-pure);">
+  <div class="container">
+    <div class="service-hero">
+      <div class="service-visual-column">
+        <div class="service-img reveal fade-carousel">
+          {(SP.images||FB.sectionPedicure.images).map((src:string,i:number)=>(
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Pédicure ${i+1}`} loading="lazy" width="600" height="750" />
+          ))}
+          <div class="service-img-tag">Rituel II</div>
+        </div>
+      </div>
+      <div class="service-text reveal">
+        <span class="eyebrow">{SP.eyebrow}</span>
+        <h2>{SP.h2_normal}<br><span set:html={SP.h2_italic}></span></h2>
+        <p class="lead">{SP.lead}</p>
+        <p>{SP.corps}</p>
+        <ul class="service-steps">
+          {(SP.steps||FB.sectionPedicure.steps).map((s:any)=>(
+            <li><strong>{s.label}</strong>{s.texte}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-block reveal">
+      <div class="pricing-header">
+        <h3>{SP.titre_tarifs}</h3>
+        <span class="pricing-note">{SP.note_tarifs}</span>
+      </div>
+      <div class="pricing-grid">
+        {pedP.map((p:any)=>(
+          <div class="price-row" onclick={`reserverSoin('${p.id||''}')`}>
+            <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
+            <div class="dots"></div>
+            <div class="price">{p.prix}{!p.prix?.includes('dès')&&<span style="font-size:11px;margin-left:8px;color:var(--signature);">✺</span>}</div>
+          </div>
+        ))}
+      </div>
+      <div class="service-cta">
+        <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{SP.cta1} <span class="arrow"></span></a>
+        <button class="btn btn-ghost" onclick="openModal('modal-pedicure')">{SP.cta2}</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COIFFURE ══════════════════════════════════════════════════════════ -->
+<section class="service-detail" id="coiffure">
+  <div class="container">
+    <div class="service-hero">
+      <div class="service-visual-column">
+        <div class="service-img reveal fade-carousel">
+          {(SC.images||FB.sectionCoiffure.images).map((src:string,i:number)=>(
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Coiffure ${i+1}`} loading="lazy" width="600" height="750" />
+          ))}
+          <div class="service-img-tag">Rituel III</div>
+        </div>
+        <div class="reveal" style="margin-top:24px;text-align:center;">
+          <a href={G.instagram} target="_blank" rel="noopener" class="btn btn-ghost" style="width:100%;justify-content:center;display:inline-flex;">{SC.insta_cta||'Voir mes coiffures'} <span class="arrow"></span></a>
+        </div>
+      </div>
+      <div class="service-text reveal">
+        <span class="eyebrow">{SC.eyebrow}</span>
+        <h2>{SC.h2_normal}<br><span set:html={SC.h2_italic}></span></h2>
+        <p class="lead">{SC.lead}</p>
+        <p>{SC.corps}</p>
+        <ul class="service-steps">
+          {(SC.steps||FB.sectionCoiffure.steps).map((s:any)=>(
+            <li><strong>{s.label}</strong>{s.texte}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="pricing-block reveal">
+      <div class="pricing-header">
+        <h3>{SC.titre_tarifs}</h3>
+        <span class="pricing-note">{SC.note_tarifs}</span>
+      </div>
+      <div class="pricing-filters">
+        {(SC.filters||FB.sectionCoiffure.filters).map((f:any,i:number)=>(
+          <button class={`filter-btn${i===0?' active':''}`} onclick={`filtrerCoiffure('${f.val}')`}>{f.label}</button>
+        ))}
+      </div>
+      <div class="pricing-grid" id="coiffure-grid">
+        {coiP.map((p:any)=>(
+          <div class="price-row" data-category={p.cat||p.categorie_filtre} onclick={`reserverSoin('${p.id||''}')`}>
+            <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
+            <div class="dots"></div>
+            <div class="price">{p.prix}{!p.prix?.includes('dès')&&<span style="font-size:11px;margin-left:8px;color:var(--signature);">✺</span>}</div>
+          </div>
+        ))}
+      </div>
+      <div class="service-cta">
+        <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{SC.cta1} <span class="arrow"></span></a>
+        <button class="btn btn-ghost" onclick="openModal('modal-coiffure')">{SC.cta2}</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ À PROPOS ══════════════════════════════════════════════════════════ -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-content reveal">
+        <span class="eyebrow">{SA.eyebrow}</span>
+        <h2 class="section-title" set:html={SA.h2}></h2>
+        <p class="lead">{SA.lead}</p>
+        <p set:html={SA.corps1}></p>
+        <p set:html={SA.corps2}></p>
+        <div class="signature">{SA.signature}</div>
+        <div class="about-stats">
+          {(SA.stats||FB.sectionAbout.stats).map((s:any)=>(
+            <div>
+              <div class="stat-num"><em>{s.num}</em>{s.suffix}</div>
+              <div class="stat-lbl">{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="about-image reveal fade-carousel">
+        <div class="main">
+          {(SA.images||FB.sectionAbout.images).map((src:string,i:number)=>(
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Jocelyne ${i+1}`} loading="lazy" width="600" height="750" />
+          ))}
+        </div>
+        <div class="badge-circle">
+          <span class="num" set:html={(SA.badge_num||'18+').replace('+','<sup style="font-size:0.4em">+</sup>')}></span>
+          <span class="lbl">{SA.badge_lbl||'Ans d\'expertise'}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ LE SALON ══════════════════════════════════════════════════════════ -->
+<section class="service-detail" id="le-salon" style="padding:100px 0;background:var(--bg-pure);">
+  <div class="container">
+    <div class="service-hero" style="margin-bottom:0;">
+      <div class="service-img reveal fade-carousel">
+        {(SS.images||FB.sectionSalon.images).map((src:string,i:number)=>(
+          <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Salon ${i+1}`} loading="lazy" width="600" height="750" />
+        ))}
+        <div class="service-img-tag">{SS.tag||"L'Écrin"}</div>
+      </div>
+      <div class="service-text reveal">
+        <span class="eyebrow">{SS.eyebrow}</span>
+        <h2 set:html={SS.h2}></h2>
+        <p class="lead">{SS.lead}</p>
+        <p>{SS.corps}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AVIS ══════════════════════════════════════════════════════════════ -->
+<section class="reviews">
+  <div class="container">
+    <div class="reviews-header reveal">
+      <span class="eyebrow">{SR.eyebrow}</span>
+      <h2 class="section-title" set:html={SR.h2}></h2>
+      <div class="reviews-rating"><span class="stars">★ ★ ★ ★ ★</span><span>{SR.rating_text}</span></div>
+      <div style="margin-top:10px;">
+        <a href={SR.lien_avis_url||'#'} target="_blank" rel="noopener" class="text-link" style="color:var(--bg-pure);border-color:var(--bg-pure);">{SR.lien_avis_label||'Rédiger un avis'}</a>
+      </div>
+      <br>
+      <div class="reviews-carousel reveal">
+        <div class="reviews-track" id="reviewsTrack">
+          {avisSlides.map((slide:any[])=>(
+            <div class="review-slide">
+              {slide.map((a:any)=>(
+                <div class="review-card">
+                  <div class="review-stars">★ ★ ★ ★ ★</div>
+                  <p class="review-text">"{a.texte}"</p>
+                  <div class="review-author">
+                    <div class="review-avatar">{(a.auteur||'?')[0]}</div>
+                    <div class="review-meta"><strong>{a.auteur}</strong><span>{a.service}</span></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <div class="reviews-dots" id="reviewsDots"></div>
+        <button class="review-arrow prev" onclick="prevSlide()" aria-label="Précédent">❮</button>
+        <button class="review-arrow next" onclick="nextSlide()" aria-label="Suivant">❯</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ GALERIE ═══════════════════════════════════════════════════════════ -->
+<section class="gallery">
+  <div class="container">
+    <div class="gallery-header reveal">
+      <div>
+        <span class="eyebrow">{SG.eyebrow}</span>
+        <h2 set:html={SG.h2}></h2>
+      </div>
+      <a href={G.instagram} target="_blank" rel="noopener" class="gallery-handle text-link">{SG.lien_label}</a>
+    </div>
+    <div class="gallery-grid reveal">
+      {(SG.images||FB.sectionGallery.images).map((src:string)=>(
+        <a href={G.instagram} target="_blank" rel="noopener">
+          <img src={`${base}/${src}`} alt="Instagram Lyne Beauty" loading="lazy" width="400" height="500" />
+          <div class="insta-overlay">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ═══════════════════════════════════════════════════════════════ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-grid">
+      <aside class="faq-aside reveal">
+        <span class="eyebrow">{SF.eyebrow}</span>
+        <h2 class="section-title" set:html={SF.h2}></h2>
+        <p set:html={SF.intro}></p>
+        <a href={G.whatsapp} target="_blank" rel="noopener" class="btn btn-primary">{SF.cta} <span class="arrow"></span></a>
+      </aside>
+      <div class="faq-list reveal">
+        {faqData.map((f:any)=>(
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>{f.question||f.q}</span>
+              <span class="faq-toggle"></span>
+            </button>
+            <div class="faq-answer">
+              <p set:html={f.reponse||f.r}></p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ RÉSERVATION ═══════════════════════════════════════════════════════ -->
+<section class="reservation-section" id="reservation">
+  <div class="container">
+    <div class="reservation-container reveal" style="text-align:center;">
+      <div class="reservation-header" style="margin-bottom:32px;">
+        <span class="eyebrow" style="justify-content:center;margin-bottom:16px;">{SRES.eyebrow}</span>
+        <h2 set:html={SRES.h2}></h2>
+        <p style="color:var(--ink-soft);max-width:500px;margin:0 auto;">{SRES.texte}</p>
+      </div>
+      <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary" style="font-size:16px;padding:24px 48px;">
+        {SRES.cta} <span class="arrow"></span>
+      </a>
+      <p style="font-size:12px;color:var(--ink-mute);margin-top:16px;">{SRES.note}</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONTACT ═══════════════════════════════════════════════════════════ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <span class="eyebrow">{SCON.eyebrow}</span>
+        <h2 class="section-title" set:html={SCON.h2}></h2>
+        <p class="lead">{SCON.lead}</p>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="contact-detail"><div class="label">Adresse</div><div class="value">{G.adresse}<br>{G.ville}</div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="contact-detail"><div class="label">Téléphone</div><div class="value"><a href={`tel:${G.telephone?.replace(/\s/g,'')}`}>{G.telephone}</a></div></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
+          <div class="contact-detail"><div class="label">WhatsApp</div><div class="value"><a href={G.whatsapp} target="_blank" rel="noopener">Réponse rapide en message</a></div></div>
+        </div>
+      </div>
+      <div class="contact-hours reveal">
+        <h3>{HOR.titre||SCON.h3_horaires}</h3>
+        {(HOR.jours||FB.horaires.jours).map((h:any)=>(
+          <div class={`hours-row${h.ferme?' closed':''}`}>
+            <span class="day">{h.jour}</span>
+            <span class="time">{h.ferme?'Fermé':h.heure||h.heures}</span>
+          </div>
+        ))}
+        <p style="font-size:12px;color:var(--ink-mute);margin-top:16px;letter-spacing:.04em;">* Pause déjeuner Mar-Ven : 12:00 — 13:00</p>
+      </div>
+    </div>
+    <div class="map-wrap reveal">
+      <iframe src="https://www.google.com/maps?q=Rue+de+Zaehringen+4,+1700+Fribourg&output=embed" title="Localisation Institut Lyne Beauty - Rue de Zaehringen 4, 1700 Fribourg" loading="lazy" width="100%" height="100%" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <img src={`${base}/img/logo-lyne.webp`} alt={`Logo ${G.nom}`} width="140" height="140">
+          <span>Institut Lyne<em>Beauty</em></span>
+        </a>
+        <p>{FT.description}</p>
+        <div class="social-links">
+          <a href={G.instagram} target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href={G.whatsapp} target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>{FT.col1_titre}</h4>
+        <ul>{(FT.col1_liens||FB.footer_.col1_liens).map((l:any)=><li><a href={l.href||l.ancre}>{l.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <h4>{FT.col2_titre}</h4>
+        <ul>{(FT.col2_liens||FB.footer_.col2_liens).map((l:any)=><li><a href={l.href||l.ancre}>{l.label}</a></li>)}</ul>
+      </div>
+      <div>
+        <h4>{FT.col3_titre}</h4>
+        <ul>
+          <li>{G.nom}</li>
+          <li>{G.adresse}</li>
+          <li>{G.ville}</li>
+          <li><a href={`tel:${G.telephone?.replace(/\s/g,'')}`}>{G.telephone}</a></li>
+          <li><a href={G.whatsapp} target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>{FT.copyright}</span>
+      <div>
+        <a href="#" onclick="openModal('modal-mentions'); return false;" rel="nofollow" style="color:inherit;text-decoration:underline;margin-right:15px;">{FT.mentions}</a>
+        <span>{FT.location}</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a href={G.whatsapp} target="_blank" rel="noopener" class="whatsapp-float" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<!-- Modals -->
+<div class="modal" id="modal-mentions"><div class="modal-content" style="max-width:600px;"><button class="modal-close" onclick="closeModal('modal-mentions')">×</button><span class="eyebrow">Informations légales</span><h2>Impressum &<br><em>Mentions Légales</em></h2><h3 style="margin-top:20px;font-size:18px;">Responsable :</h3><p><strong>Boue Espe Martinez Lou Bonan Jesseline</strong></p><h3 style="margin-top:20px;font-size:18px;">Entreprise :</h3><p>Institut Lyne Beauty Onglerie & Coiffeur<br>Rue de Zaehringen 4<br>1700 Fribourg, Suisse</p><h3 style="margin-top:20px;font-size:18px;">Contact :</h3><p>Téléphone / WhatsApp : +41 77 998 64 26</p></div></div>
+
+<div class="modal" id="modal-onglerie"><div class="modal-content"><button class="modal-close" onclick="closeModal('modal-onglerie')">×</button><span class="eyebrow">Expertise · Univers I</span><h2>L'art de l'<em>onglerie</em> à Fribourg</h2><p>L'onglerie chez Lyne Beauty n'est pas une succession de gestes : c'est un protocole, une technique, une lecture de la main.</p><h3>Pose Gel</h3><p>Construction sur ongle naturel ou avec rallonge. Tenue moyenne : 3 à 4 semaines avant remplissage.</p><h3>Acrylique</h3><p>Rigidité supérieure, idéale pour les ongles fragiles ou les longueurs ambitieuses. Sculptée à main levée.</p><h3>Vernis semi-permanent</h3><p>Couleur impeccable pendant 2 à 3 semaines, disponible sur mains et pieds.</p><h3>Nail Art & French</h3><p>French, ombré, marbré, chrome, motifs floraux. Supplément unique de 15 CHF.</p></div></div>
+
+<div class="modal" id="modal-pedicure"><div class="modal-content"><button class="modal-close" onclick="closeModal('modal-pedicure')">×</button><span class="eyebrow">Expertise · Univers II</span><h2>La <em>pédicure</em> Spa & Beauté</h2><div style="background:#faf5f5;color:#8a3c3c;padding:12px 16px;border-left:3px solid #d97777;margin:15px 0;font-size:14px;"><strong>Information importante :</strong> Pour des raisons médicales, l'esthéticienne ne prend pas en charge les personnes présentant des mycoses. Merci de vous orienter vers un podologue.</div><p>À Fribourg, je vous ouvre les portes d'un véritable sanctuaire pour vos pieds. Mon rituel pédicure est un moment de lâcher-prise conçu pour soulager vos appuis et sublimer vos ongles.</p></div></div>
+
+<div class="modal" id="modal-coiffure"><div class="modal-content"><button class="modal-close" onclick="closeModal('modal-coiffure')">×</button><span class="eyebrow">Expertise · Univers III</span><h2>La <em>coiffure</em> afro & classique</h2><p>Tresses afro, tissages, colorations, défrisages, brushings : Lyne Beauty est l'un des rares salons de Fribourg à maîtriser pleinement ces deux univers capillaires.</p><h3>Tresses</h3><p>Plaquées, draid, rasta — simples ou élaborées. Durée : entre 2h et 5h selon le volume.</p><h3>Tissages & Perruques</h3><p>Pose cousu main, ajustement millimétré pour un rendu naturel. Entretien toutes les 6 à 8 semaines.</p><h3>Colorations</h3><p>Coloration racines, applications minutieuses avec palette professionnelle.</p></div></div>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => { nav?.classList.toggle('scrolled', window.scrollY > 60); });
+  // Burger
+  const burger = document.getElementById('burger');
+  const navLinks = document.getElementById('navLinks');
+  burger?.addEventListener('click', () => { burger.classList.toggle('open'); navLinks?.classList.toggle('open'); });
+  navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { burger?.classList.remove('open'); navLinks.classList.remove('open'); }));
+  // FAQ
+  window.toggleFaq = function(btn) { const item = btn.parentElement; const isOpen = item.classList.contains('open'); document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open')); if(!isOpen) item.classList.add('open'); };
+  // Reviews carousel
+  const track = document.getElementById('reviewsTrack');
+  const slides = track ? track.querySelectorAll('.review-slide') : [];
+  const dotsContainer = document.getElementById('reviewsDots');
+  let cur = 0, iv: any;
+  if(slides.length > 0) {
+    slides.forEach((_,i) => { const d = document.createElement('button'); d.className = 'dot'+(i===0?' active':''); d.setAttribute('aria-label','Slide '+(i+1)); d.addEventListener('click',()=>goToSlide(i)); dotsContainer?.appendChild(d); });
+    window.goToSlide = function(i) { cur=i; if(track) track.style.transform=`translateX(-${i*100}%)`; document.querySelectorAll('.dot').forEach((d,idx)=>d.classList.toggle('active',idx===i)); reset(); };
+    window.nextSlide = function() { goToSlide((cur+1)%slides.length); };
+    window.prevSlide = function() { goToSlide((cur-1+slides.length)%slides.length); };
+    function reset() { clearInterval(iv); iv=setInterval(window.nextSlide,9000); }
+    reset();
+  }
+  // Filtres onglerie
+  window.filtrerOnglerie = function(cat, e) { document.querySelectorAll('#onglerie .filter-btn').forEach(b=>b.classList.remove('active')); e?.target?.classList.add('active'); document.querySelectorAll('#onglerie-grid .price-row, #onglerie-grid .pricing-subtitle').forEach(el => { const c = el.getAttribute('data-category'); el.classList.toggle('hidden', !(cat==='all'||c===cat||c==='all')); }); };
+  // Filtres coiffure
+  window.filtrerCoiffure = function(cat) { document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); (event as any)?.target?.classList.add('active'); document.querySelectorAll('#coiffure-grid .price-row').forEach(el => { el.classList.toggle('hidden', !(cat==='all'||el.getAttribute('data-category')===cat)); }); };
+  // Modals
+  window.openModal = function(id) { document.getElementById(id)?.classList.add('open'); document.body.style.overflow='hidden'; };
+  window.closeModal = function(id) { document.getElementById(id)?.classList.remove('open'); document.body.style.overflow=''; };
+  document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if(e.target===m) window.closeModal((m as HTMLElement).id); }));
+  document.addEventListener('keydown', e => { if(e.key==='Escape') document.querySelectorAll('.modal.open').forEach(m => window.closeModal((m as HTMLElement).id)); });
+  // Fade carousel
+  document.addEventListener('DOMContentLoaded', () => { document.querySelectorAll('.fade-carousel').forEach(c => { const imgs = c.querySelectorAll('img'); let i=0; if(imgs.length>1) setInterval(()=>{ imgs[i].classList.remove('active'); i=(i+1)%imgs.length; imgs[i].classList.add('active'); },3000); }); });
+  // Reveal scroll
+  const obs = new IntersectionObserver(entries => { entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); } }); },{threshold:.12,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+<script>
+  if (window.self !== window.top) {
+    import('@sanity/visual-editing').then(({ enableOverlays }) => {
+      enableOverlays();
+    });
+  }
+</script>
+
+</body>
+</html>
