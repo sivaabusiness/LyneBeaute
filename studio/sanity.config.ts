@@ -44,6 +44,7 @@ export default defineConfig({
         origin: 'https://lynebeauty.ch',
         preview: '/',
       },
+      allowOrigins: ['https://lynebeauty.ch', 'https://www.lynebeauty.ch'],
     }),
     visionTool(),
   ],
