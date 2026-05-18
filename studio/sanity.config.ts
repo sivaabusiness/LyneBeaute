@@ -41,9 +41,7 @@ export default defineConfig({
     }),
     presentationTool({
       previewUrl: {
-        origin: process.env.NODE_ENV === 'production'
-          ? 'https://lynebeauty.ch'
-          : 'http://localhost:4321',
+        origin: 'https://lynebeauty.ch',
         preview: '/',
       },
     }),
