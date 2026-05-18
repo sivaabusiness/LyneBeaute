@@ -41,7 +41,7 @@ export default defineConfig({
     }),
     presentationTool({
       previewUrl: {
-        origin: 'https://lynebeauty.ch',
+        origin: 'https://www.lynebeauty.ch',
         preview: '/',
       },
       allowOrigins: ['https://lynebeauty.ch', 'https://www.lynebeauty.ch'],
