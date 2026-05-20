@@ -38,33 +38,12 @@ Tu peux lancer toutes tes commandes (npm run dev, npm run sanity) directement de
 
 ### Extensions recommandées
 Dans VS Code, va dans l'onglet Extensions (icône carrés à gauche) et installe :
-- **Astro** (par Astro Build) — pour la coloration syntaxique
+- **c** (par Astro Build) — pour la coloration syntaxique
 - **Tailwind CSS IntelliSense** (optionnel)
 
 ---
 
-## 3️⃣ Visual Editing — Modifier en cliquant sur le site
-
-Le **mode Presentation** te permet de voir ton site EN DIRECT dans le Studio Sanity et de modifier les contenus visuellement.
-
-### Comment l'utiliser
-
-1. Lance les deux serveurs en parallèle (dans 2 onglets de terminal) :
-   ```bash
-   # Terminal 1 — Site Astro
-   npm run dev
-   
-   # Terminal 2 — Studio Sanity
-   npm run sanity
-   ```
-
-2. Dans le Studio (**localhost:3333**), clique sur l'onglet **"Presentation"** dans le menu gauche.
-
-3. Le site s'affiche dans une iframe à droite. Tu peux naviguer sur le site et modifier les contenus dans le panneau gauche — les changements apparaissent instantanément dans la preview.
-
-4. Pour publier : clique **"Publish"** dans le Studio, puis rafraîchis **localhost:4321** pour voir la version finale.
-
-### Voir le site + modifier en même temps (méthode classique)
+## 3️⃣ Voir le site + modifier en même temps
 
 Place ton écran en **deux fenêtres côte à côte** :
 - À gauche : **localhost:3333** (Sanity Studio)

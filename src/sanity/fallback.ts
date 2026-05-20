@@ -10,7 +10,8 @@ export const FB = {
     adresse: "Rue de Zaehringen 4",
     ville: "1700 Fribourg",
     meta_title: "Institut Lyne Beauty Onglerie & Coiffeur — Fribourg | Pose de gel, Tresses",
-    meta_desc: "Institut Lyne Beauty Onglerie & Coiffeur à Fribourg (Rue de Zaehringen 4) — Expertise Onglerie (pose gel, vernis semi-permanent) et Coiffure Afro/Classique. Réservez sur brevo.com.",
+    facebook: "https://www.facebook.com/share/18nv4KFwRb/?mibextid=wwXIfr",
+    meta_desc: "Institut Lyne Beauty en Vieille-Ville de Fribourg. Onglerie, pédicure spa et coiffure afro & tresses. 18 ans d'expertise pour vous sublimer. Réservez votre rendez-vous.",
   },
   nav: {
     liens: [
