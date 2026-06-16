@@ -334,7 +334,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }}}>
     window.agendaPrestations = agendaPrestations;
     window.reserverSoin = function(nomSoin) {
-      const url = agendaPrestations[nomSoin];
+      const url = agendaPrestations[nomSoin] || (nomSoin && nomSoin.startsWith('http') ? nomSoin : null);
       if(url && window.BrevoBookingPage) BrevoBookingPage.initStaticButton({url});
     };
   </script>
