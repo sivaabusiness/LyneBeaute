@@ -371,7 +371,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <section class="hero" id="top">
   <div class="hero-content">
     <span class="eyebrow hero-eyebrow">{H.eyebrow}</span>
-    <h1>{H.h1_normal}<em>{H.h1_italic}</em>{H.h1_suite||' au cœur de Fribourg'}</h1>
+    <h1>{H.h1_normal}<em>{H.h1_italic}</em>{H.h1_suite||''}</h1>
     <h2 set:html={H.h2}></h2>
     <div class="hero-ctas">
       <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{H.cta1} <span class="arrow"></span></a>
