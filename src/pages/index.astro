@@ -115,7 +115,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     .hero-content{padding:0 32px 0 80px;max-width:720px;animation:fadeInUp 1.2s var(--t-slow) both}.hero-eyebrow{margin-bottom:32px}
 
-    .hero h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;font-weight:300;letter-spacing:-.02em;margin-bottom:24px}.hero h1 em{font-style:italic;font-weight:300;color:var(--signature);display:block}
+    .hero h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;font-weight:300;letter-spacing:-.02em;margin-bottom:24px}.hero h1 em{font-style:italic;font-weight:300;color:var(--signature)}
 
     .hero h2{font-family:var(--ff-body);font-size:clamp(1rem,1.5vw,1.15rem);font-weight:300;color:var(--ink-soft);line-height:1.7;max-width:580px;margin-bottom:40px}
 
@@ -371,7 +371,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <section class="hero" id="top">
   <div class="hero-content">
     <span class="eyebrow hero-eyebrow">{H.eyebrow}</span>
-    <h1>{H.h1_normal}<em>{H.h1_italic}</em>{H.h1_suite||''}</h1>
+    <h1>{H.h1_normal}<em>{H.h1_italic}</em></h1>
     <h2 set:html={H.h2}></h2>
     <div class="hero-ctas">
       <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{H.cta1} <span class="arrow"></span></a>
