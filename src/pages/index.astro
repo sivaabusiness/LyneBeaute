@@ -68,9 +68,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   <meta property="og:locale" content="fr_CH" />
 
-  <link href="https://meetings.brevo.com/assets/styles/popup.css" rel="stylesheet" />
-
-  <script src="https://meetings.brevo.com/assets/libs/popup.min.js" type="text/javascript" defer></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -291,51 +288,57 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     @media(max-width:390px){.logo span{display:none}}
 
   </style>
-  <script define:vars={{agendaPrestations: {
-    'premiere-pose-gel':'https://meet.brevo.com/institut-lynebeauty/premiere-pose-gel/',
-    'Première pose Gel avec Chablon':'https://meet.brevo.com/institut-lynebeauty/1onglerie-premiere-pose-gel-avec-chablon-100-chf',
-    'premiere-pose-gel-chablon':'https://meet.brevo.com/institut-lynebeauty/1onglerie-premiere-pose-gel-avec-chablon-100-chf',
-    'remplissage-gel-4-5-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-gel-4-5-sem/',
-    'remplissage-acrylique-4-5-sem':'https://meet.brevo.com/institut-lynebeauty/premiere-pose-gel-copie',
-    'remplissage-gel-tardif-6-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-acrylique-tardif-6-sem',
-    'premiere-pose-acrylique':'https://meet.brevo.com/institut-lynebeauty/1onglerie-premiere-pose-complete-acrylique-avec-chablon-90-chf',
-    'premiere-pose-acrylique-chablon':'https://meet.brevo.com/institut-lynebeauty/1onglerie-premiere-pose-complete-acrylique-avec-chablon-90-chf',
-    'remplissage-acrylique-tardif-6-sem':'https://meet.brevo.com/institut-lynebeauty/remplissage-gel-tardif-6-sem',
-    'manucure-simple':'https://meet.brevo.com/institut-lynebeauty/manucure-simple/',
-    'vernis-semi-permanent-mains':'https://meet.brevo.com/institut-lynebeauty/vernis-semi-permanent-mains',
-    'gel-acrylique-pieds':'https://meet.brevo.com/institut-lynebeauty/pedicure-gel-ou-acrylique-pieds',
-    'pedicure-spa-simple':'https://meet.brevo.com/institut-lynebeauty/onglerie-manucure-simple-copy',
-    'pedicure-spa-semi-permanent':'https://meet.brevo.com/institut-lynebeauty/pedicure-pedicure-spa-semi-permanent/',
-    'pedicure-gel-acrylique':'https://meet.brevo.com/institut-lynebeauty/pedicure-pedicure-spa-simple-copy',
-    'vernis-semi-permanent-pieds':'https://meet.brevo.com/institut-lynebeauty/pedicure-vernis-semi-permanent-pieds-45-chf',
-    'barrels-twists':'https://meet.brevo.com/institut-lynebeauty/coiffure-barrels-twists-fribourg-des-100-chf',
-    'deux-tresses-sans':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf',
-    'deux-tresses-ext':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf',
-    'couleur-racine':'https://meet.brevo.com/institut-lynebeauty/coiffure-coloration-racines-fribourg-des-60-chf',
-    'brushing':'https://meet.brevo.com/institut-lynebeauty/coiffure-brushing-des-50-chf',
-    'shampooing':'https://meet.brevo.com/institut-lynebeauty/coiffure-shampooing-des-20-chf',
-    'tresses-draid':'https://meet.brevo.com/institut-lynebeauty/tresses-draid-avec-extensions/',
-    'tresses-plaquees':'https://meet.brevo.com/institut-lynebeauty/coiffure-tresses-plaquees/',
-    'tresses-plaquees-avec-ext':'https://meet.brevo.com/institut-lynebeauty/3coiffure-tresses-plaquees-avec-extension-des-100-chf',
-    'vanilles-twists':'https://meet.brevo.com/institut-lynebeauty/coiffure-vanilles-ou-twists',
-    'vanilles-twists-ext':'https://meet.brevo.com/institut-lynebeauty/3coiffure-vanilles-ou-twists-avec-extension-des-120-chf',
-    'entretien-locks':'https://meet.brevo.com/institut-lynebeauty/coiffure-entretien-locks-rasta/',
-    'pose-tissage':'https://meet.brevo.com/institut-lynebeauty/coiffure-pose-de-tissage-complete/',
-    'chignon':'https://meet.brevo.com/institut-lynebeauty/coiffure-2-grandes-tresses-plaquees-sans-extension-des-45-chf-copie',
-    'pose-perruque':'https://meet.brevo.com/institut-lynebeauty/coiffure-pose-perruque/',
-    'defrisage':'https://meet.brevo.com/institut-lynebeauty/coiffure-defrisage/',
-    'coloration-brushing':'https://meet.brevo.com/institut-lynebeauty/coiffure-coloration-amp-brushing/',
-    'retrait-depose':'https://meet.brevo.com/institut-lynebeauty/retrait-amp-depose-douce/',
-    'general':'https://meet.brevo.com/institut-lynebeauty/',
-    '1onglerie-premiere-pause-complete-acrylique-avec-popits-75-chf':'https://meet.brevo.com/institut-lynebeauty/1onglerie-premiere-pause-complete-acrylique-avec-popits-75-chf',
-    '1onglerie-remplissage-gel-avec-popits-65-chf':'https://meet.brevo.com/institut-lynebeauty/1onglerie-remplissage-gel-avec-popits-65-chf',
-    '1onglerie-remplissage-acrylique-avec-popits-60-chf':'https://meet.brevo.com/institut-lynebeauty/1onglerie-remplissage-acrylique-avec-popits-60-chf',
-    'premier-pose-complete-gel-avec-popits-75-chf':'https://meet.brevo.com/institut-lynebeauty/premier-pose-complete-gel-avec-popits-75-chf'
+  <script define:vars={{simplybookServices: {
+    'premiere-pose-gel': 3,
+    'premiere-pose-gel-chablon': 40,
+    'remplissage-gel-4-5-sem': 4,
+    'remplissage-gel-tardif-6-sem': 5,
+    'premiere-pose-acrylique': 6,
+    'premiere-pose-acrylique-chablon': 41,
+    'remplissage-acrylique-4-5-sem': 7,
+    'remplissage-acrylique-tardif-6-sem': 8,
+    'manucure-simple': 9,
+    'vernis-semi-permanent-mains': 10,
+    'supplement-longueur-extreme': 11,
+    'french-babyboomer-nailart-mains': 12,
+    'reparation-ongle': 13,
+    'retrait-acrylique-gel-mains': 14,
+    'retrait-vernis-semi-permanent-mains': 15,
+    'vernis-semi-permanent-pieds': 2,
+    'gel-acrylique-pieds': 16,
+    'pedicure-spa-simple': 17,
+    'pedicure-spa-semi-permanent': 18,
+    'pedicure-gel-acrylique': 19,
+    'pedicure-plus-longueur': 20,
+    'pedicure-french-nailart': 21,
+    'retrait-vernis-semi-permanent-pieds': 22,
+    'retrait-gel-acrylique-pieds': 23,
+    'tresses-draid': 24,
+    'tresses-plaquees-avec-ext': 25,
+    'deux-tresses-ext': 26,
+    'vanilles-twists-ext': 27,
+    'tresses-plaquees': 28,
+    'deux-tresses-sans': 29,
+    'vanilles-twists': 30,
+    'barrels-twists': 31,
+    'entretien-locks': 32,
+    'pose-tissage': 33,
+    'pose-perruque': 34,
+    'chignon': 35,
+    'defrisage': 36,
+    'couleur-racine': 37,
+    'brushing': 38,
+    'shampooing': 39,
+    '1onglerie-premiere-pause-complete-acrylique-avec-popits-75-chf': 42,
+    '1onglerie-remplissage-gel-avec-popits-65-chf': 43,
+    '1onglerie-remplissage-acrylique-avec-popits-60-chf': 44,
+    'premier-pose-complete-gel-avec-popits-75-chf': 45
   }}}>
-    window.agendaPrestations = agendaPrestations;
+    window.simplybookServices = simplybookServices;
     window.reserverSoin = function(nomSoin) {
-      const url = agendaPrestations[nomSoin] || (nomSoin && nomSoin.startsWith('http') ? nomSoin : null);
-      if(url && window.BrevoBookingPage) BrevoBookingPage.initStaticButton({url});
+      const serviceId = simplybookServices[nomSoin];
+      const url = serviceId ? `https://lynebeauty.simplybook.me/v2/#book/service/${serviceId}` : 'https://lynebeauty.simplybook.me/v2/#book';
+      window.open(url, '_blank', 'noopener');
     };
   </script>
 </head>
