@@ -35,7 +35,7 @@ export const FB = {
     cta2: "Découvrir mes rituels",
     badge: "Lâcher-prise · Avec ou sans RDV",
     marquee: "Ongles Signature ✦ Lâcher-prise ✦ Tresses & Tissages ✦ Confiance ✦ Vernis Semi-Permanent ✦ Bien-être ✦ Coiffure Afro ✦ Pédicure Spa ✦",
-    images: ["img/hero-pedicure-orange.webp", "img/hero-tresses-fleurs.webp", "img/hero-ongles-jaune.webp"],
+    images: ["img/hero-onglerie.webp", "img/hero-pedicure.webp", "img/hero-coiffure.webp"],
   },
   sectionUniverses: {
     eyebrow: "Vos instants sur-mesure",

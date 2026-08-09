@@ -115,7 +115,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     .hero-content{padding:0 32px 0 80px;max-width:720px;animation:fadeInUp 1.2s var(--t-slow) both}.hero-eyebrow{margin-bottom:32px}
 
-    .hero h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;font-weight:300;letter-spacing:-.02em;margin-bottom:24px}.hero h1 em{font-style:italic;font-weight:300;color:var(--signature)}
+    .hero h1{font-size:clamp(2rem,4vw,3.5rem);line-height:1.15;font-weight:300;letter-spacing:-.02em;margin-bottom:24px}.hero h1 em{font-style:normal;font-weight:700;color:var(--signature)}
 
     .hero h2{font-family:var(--ff-body);font-size:clamp(1rem,1.5vw,1.15rem);font-weight:300;color:var(--ink-soft);line-height:1.7;max-width:580px;margin-bottom:40px}
 
@@ -371,7 +371,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 <section class="hero" id="top">
   <div class="hero-content">
     <span class="eyebrow hero-eyebrow">{H.eyebrow}</span>
-    <h1>{H.h1_normal}<em>{H.h1_italic}</em></h1>
+    <h1>{H.h1_normal}<em>{H.h1_italic}</em>{H.h1_suite}</h1>
     <h2 set:html={H.h2}></h2>
     <div class="hero-ctas">
       <a href={G.lien_reservation} onclick="reserverSoin('general'); return false;" class="btn btn-primary">{H.cta1} <span class="arrow"></span></a>
@@ -381,7 +381,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="hero-visual">
     <div class="hero-frame fade-carousel">
       {(H.images || FB.hero.images).map((src:string, i:number) => (
-        <img src={`${base}/${src}`} alt={`Intérieur Institut Lyne Beauty ${i+1}`} loading={i===0?'eager':'lazy'} width="800" height="1000" class={i===1?'active':''} />
+        <img src={`${base}/${src}`} alt={['Pose d\'ongles signature Lyne Beauty','Pédicure spa Lyne Beauty','Coiffure tresses Lyne Beauty'][i] || `Institut Lyne Beauty ${i+1}`} loading={i===0?'eager':'lazy'} width="800" height="1000" class={i===1?'active':''} style={`object-position:${['center 22%','center 30%','65% 20%'][i] || 'center'}`} />
       ))}
     </div>
     <div class="hero-badge"><span class="pulse"></span>{H.badge}</div>
@@ -514,7 +514,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="price-row" onclick={`reserverSoin('${p.id||''}')`}>
             <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
             <div class="dots"></div>
-            <div class="price">{p.prix}{!p.prix?.includes('dès')&&<svg class="cal-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}</div>
+            <div class="price">{p.prix} <svg class="cal-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
           </div>
         ))}
       </div>
@@ -568,7 +568,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           <div class="price-row" data-category={p.cat||p.categorie_filtre} onclick={`reserverSoin('${p.id||''}')`}>
             <div class="name">{p.nom}{p.detail&&<small>{p.detail}</small>}</div>
             <div class="dots"></div>
-            <div class="price">{p.prix}{!p.prix?.includes('dès')&&<svg class="cal-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>}</div>
+            <div class="price">{p.prix} <svg class="cal-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
           </div>
         ))}
       </div>
