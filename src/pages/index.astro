@@ -381,7 +381,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="hero-visual">
     <div class="hero-frame fade-carousel">
       {(H.images || FB.hero.images).map((src:string, i:number) => (
-        <img src={`${base}/${src}`} alt={['Pose d\'ongles signature Lyne Beauty','Pédicure spa Lyne Beauty','Coiffure tresses Lyne Beauty'][i] || `Institut Lyne Beauty ${i+1}`} loading={i===0?'eager':'lazy'} width="800" height="1000" class={i===1?'active':''} style={`object-fit:${['contain','contain','cover'][i] || 'cover'};object-position:${['center','center','65% 20%'][i] || 'center'}`} />
+        <img src={`${base}/${src}`} alt={['Pose d\'ongles signature Lyne Beauty','Pédicure spa Lyne Beauty','Coiffure tresses Lyne Beauty'][i] || `Institut Lyne Beauty ${i+1}`} loading={i===0?'eager':'lazy'} width="800" height="1000" class={i===1?'active':''} style={`object-fit:${['contain','contain','cover'][i] || 'cover'};object-position:${['center','center','65% 20%'][i] || 'center'};background-color:${['#ac7c65','#b18c7a','transparent'][i] || 'transparent'}`} />
       ))}
     </div>
     <div class="hero-badge"><span class="pulse"></span>{H.badge}</div>
