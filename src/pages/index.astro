@@ -141,7 +141,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     .hero-frame.fade-carousel img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.02);transition:opacity 1s ease-in-out,transform 8s ease;z-index:0}.hero-frame.fade-carousel img.active{opacity:1;z-index:1}.hero:hover .hero-frame.fade-carousel img.active{transform:scale(1.08)}
 
-    .hero-frame video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:scale(1.02);transition:transform 8s ease}.hero:hover .hero-frame video{transform:scale(1.08)}
+    .hero-frame .hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;filter:blur(50px) saturate(1.2) brightness(.75);transform:scale(1.2)}
+    .hero-frame .hero-video-fg{position:relative;z-index:1;width:100%;height:100%;object-fit:contain}
 
     .hero-badge{position:absolute;bottom:24px;left:24px;background:var(--bg-pure);padding:14px 22px;border-radius:100px;box-shadow:var(--shadow-soft);display:flex;align-items:center;gap:12px;font-size:12px;font-weight:500;letter-spacing:.04em;z-index:2}
 
@@ -385,7 +386,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   </div>
   <div class="hero-visual">
     <div class="hero-frame">
-      <video src={`${base}/video/hero.mp4`} poster={`${base}/video/hero-poster.jpg`} autoplay muted loop playsinline preload="auto" width="592" height="1296" aria-label="Institut Lyne Beauty"></video>
+      <video class="hero-video-bg" src={`${base}/video/hero.mp4`} autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>
+      <video class="hero-video-fg" src={`${base}/video/hero.mp4`} poster={`${base}/video/hero-poster.jpg`} autoplay muted loop playsinline preload="auto" width="592" height="1296" aria-label="Institut Lyne Beauty"></video>
     </div>
     <div class="hero-badge"><span class="pulse"></span>{H.badge}</div>
   </div>
