@@ -34,6 +34,40 @@ const avisSlides: any[][] = [];
 for(let i=0; i<avisData.length; i+=2) avisSlides.push(avisData.slice(i,i+2));
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Textes alternatifs des photos (clé = nom de fichier)
+const LIEU = 'Institut Lyne Beauty Fribourg';
+const ALT: Record<string,string> = {
+  'onglerie.webp': `Pose gel longue couleur nude, ${LIEU}`,
+  'pro1.webp': `Pose gel avec nail art fleurs blanches et french rouge, ${LIEU}`,
+  'pro2.webp': `French manucure blanche sur ongles naturels, ${LIEU}`,
+  'pro3.webp': `French blanche avec nail art fleurs, ${LIEU}`,
+  'pro4.webp': `Pose gel rouge avec nail art pailleté, ${LIEU}`,
+  'f5.webp': `Pose gel jaune avec nail art, ${LIEU}`,
+  'f1.webp': `Vernis semi-permanent orange, ${LIEU}`,
+  'f4.webp': `French bordeaux sur ongles courts, ${LIEU}`,
+  'feed6-onglerie.webp': `French colorée rose et orange, ${LIEU}`,
+  'prothesie-blanc.webp': `French blanche sur ongles longs, ${LIEU}`,
+  'pedicure.webp': `Pédicure avec vernis semi-permanent rose, ${LIEU}`,
+  'pedicure2.webp': `Pédicure spa avec french blanche, ${LIEU}`,
+  'pied.webp': `Pédicure avec vernis rose et nail art, ${LIEU}`,
+  'tresses.webp': `Tresses plaquées avec bijoux dorés, ${LIEU}`,
+  'tressep.webp': `Tresses plaquées sans extensions, ${LIEU}`,
+  'tresses-femme3.webp': `Deux grandes tresses plaquées blondes, ${LIEU}`,
+  'tresses-homme4.webp': `Twists courts pour homme, ${LIEU}`,
+  'f6-coiffure.webp': `Tresses plaquées en motif courbé, ${LIEU}`,
+  'f2.webp': `Deux tresses plaquées avec mèches lilas, ${LIEU}`,
+  'f3.webp': `Coiffure bouclée avec tresses plaquées sur le côté, ${LIEU}`,
+  'coiffure4.webp': `Tresses plaquées relevées en queue de cheval, ${LIEU}`,
+  'tresse-homme.webp': `Tresses plaquées géométriques pour homme, ${LIEU}`,
+  'salon.webp': `Poste d'onglerie de l'${LIEU}`,
+  'coiffure-salon.webp': `Espace coiffure de l'${LIEU}`,
+  'pedicure-salon.webp': `Fauteuil de pédicure spa de l'${LIEU}`,
+  'jocelyne.webp': `Jesseline réalisant une manucure, ${LIEU}`,
+  'jocelyne-coiffure.webp': `Jesseline réalisant une coiffure, ${LIEU}`,
+  'Jocelyn-pedicure.webp': `Jesseline réalisant une pédicure spa, ${LIEU}`,
+};
+const altFor = (src:string, defaut:string) => ALT[src.split('/').pop() || ''] || `${defaut}, ${LIEU}`;
 ---
 <!DOCTYPE html>
 
@@ -411,7 +445,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       {(SU.cartes||FB.sectionUniverses.cartes).map((c:any) => (
         <article class="universe-card reveal" onclick={`document.querySelector('${c.lien}').scrollIntoView({behavior:'smooth'})`}>
           <div class="universe-arch fade-carousel">
-            <img src={`${base}/${c.image}`} class="active" alt={c.h3} loading="lazy" width="600" height="750" />
+            <img src={`${base}/${c.image}`} class="active" alt={altFor(c.image||'',c.h3)} loading="lazy" width="600" height="750" />
           </div>
           <div class="tagline">{c.tagline}</div>
           <h3>{c.h3}</h3>
@@ -430,7 +464,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="service-visual-column">
         <div class="service-img reveal fade-carousel">
           {(SO.images||FB.sectionOnglerie.images).map((src:string,i:number)=>(
-            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Onglerie ${i+1}`} loading="lazy" width="600" height="750" />
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={altFor(src,'Onglerie')} loading="lazy" width="600" height="750" />
           ))}
           <div class="service-img-tag">Rituel I</div>
         </div>
@@ -492,7 +526,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="service-visual-column">
         <div class="service-img reveal fade-carousel">
           {(SP.images||FB.sectionPedicure.images).map((src:string,i:number)=>(
-            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Pédicure ${i+1}`} loading="lazy" width="600" height="750" />
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={altFor(src,'Pédicure')} loading="lazy" width="600" height="750" />
           ))}
           <div class="service-img-tag">Rituel II</div>
         </div>
@@ -538,7 +572,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="service-visual-column">
         <div class="service-img reveal fade-carousel">
           {(SC.images||FB.sectionCoiffure.images).map((src:string,i:number)=>(
-            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Coiffure ${i+1}`} loading="lazy" width="600" height="750" />
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={altFor(src,'Coiffure')} loading="lazy" width="600" height="750" />
           ))}
           <div class="service-img-tag">Rituel III</div>
         </div>
@@ -608,7 +642,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="about-image reveal fade-carousel">
         <div class="main">
           {(SA.images||FB.sectionAbout.images).map((src:string,i:number)=>(
-            <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Jocelyne ${i+1}`} loading="lazy" width="600" height="750" />
+            <img src={`${base}/${src}`} class={i===0?'active':''} alt={altFor(src,'Jesseline à l\'institut')} loading="lazy" width="600" height="750" />
           ))}
         </div>
         <div class="badge-circle">
@@ -626,7 +660,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="service-hero" style="margin-bottom:0;">
       <div class="service-img reveal fade-carousel">
         {(SS.images||FB.sectionSalon.images).map((src:string,i:number)=>(
-          <img src={`${base}/${src}`} class={i===0?'active':''} alt={`Salon ${i+1}`} loading="lazy" width="600" height="750" />
+          <img src={`${base}/${src}`} class={i===0?'active':''} alt={altFor(src,'Le salon')} loading="lazy" width="600" height="750" />
         ))}
         <div class="service-img-tag">{SS.tag||"L'Écrin"}</div>
       </div>
@@ -689,7 +723,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="gallery-grid reveal">
       {(SG.images||FB.sectionGallery.images).map((src:string)=>(
         <a href={G.instagram} target="_blank" rel="noopener">
-          <img src={`${base}/${src}`} alt="Instagram Lyne Beauty" loading="lazy" width="400" height="500" />
+          <img src={`${base}/${src}`} alt={altFor(src,'Réalisation Instagram')} loading="lazy" width="400" height="500" />
           <div class="insta-overlay">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
           </div>
@@ -814,7 +848,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
       <div>
         <h4>{FT.col2_titre}</h4>
-        <ul>{(FT.col2_liens||FB.footer_.col2_liens).map((l:any)=><li><a href={l.href||l.ancre}>{l.label}</a></li>)}</ul>
+        <ul>{(FT.col2_liens||FB.footer_.col2_liens).map((l:any)=>{ const h=l.href||l.ancre; return <li><a href={h} {...(/^https?:/.test(h)?{target:'_blank',rel:'noopener'}:{})}>{l.label}</a></li>; })}</ul>
       </div>
       <div>
         <h4>{FT.col3_titre}</h4>
