@@ -1,6 +1,6 @@
 export const FB = {
   global_: {
-    nom: "Institut Lyne Beauty",
+    nom: "Institut Lyne Beauty Onglerie & Coiffeur",
     tagline: "Onglerie & Coiffeur — Fribourg",
     annonce: "✨ <strong>Offre Bienvenue :</strong> -10% sur votre première prestation. Demandez aussi votre carte de fidélité à l'institut.",
     telephone: "+41 77 998 64 26",

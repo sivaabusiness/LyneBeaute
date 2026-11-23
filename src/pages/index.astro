@@ -68,6 +68,34 @@ const ALT: Record<string,string> = {
   'Jocelyn-pedicure.webp': `Jesseline réalisant une pédicure spa, ${LIEU}`,
 };
 const altFor = (src:string, defaut:string) => ALT[src.split('/').pop() || ''] || `${defaut}, ${LIEU}`;
+
+// Données structurées LocalBusiness (cohérence NAP avec la fiche Google)
+const telIntl = '+' + (G.telephone || '+41 77 998 64 26').replace(/\D/g, '');
+const semaine = (jours:string[], opens:string, closes:string) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: jours, opens, closes });
+const LD = {
+  '@context': 'https://schema.org',
+  '@type': 'BeautySalon',
+  '@id': 'https://www.lynebeauty.ch/#institut',
+  name: G.nom,
+  legalName: 'Institut Lyne Beauty',
+  url: 'https://www.lynebeauty.ch/',
+  logo: 'https://www.lynebeauty.ch/img/logo-lyne.webp',
+  image: 'https://www.lynebeauty.ch/img/salon.webp',
+  telephone: telIntl,
+  email: 'lynebeauty8@gmail.com',
+  priceRange: 'CHF 10 – 220',
+  address: { '@type': 'PostalAddress', streetAddress: G.adresse, postalCode: '1700', addressLocality: 'Fribourg', addressRegion: 'FR', addressCountry: 'CH' },
+  geo: { '@type': 'GeoCoordinates', latitude: 46.805382, longitude: 7.16508 },
+  hasMap: 'https://www.google.com/maps?q=Rue+de+Zaehringen+4,+1700+Fribourg',
+  openingHoursSpecification: [
+    semaine(['Monday'], '14:00', '19:00'),
+    semaine(['Tuesday','Wednesday','Thursday','Friday'], '09:00', '12:00'),
+    semaine(['Tuesday','Wednesday','Thursday','Friday'], '13:00', '19:00'),
+    semaine(['Saturday'], '08:30', '17:00'),
+  ],
+  sameAs: [G.instagram, G.facebook || 'https://www.facebook.com/share/18nv4KFwRb/?mibextid=wwXIfr', G.tiktok || 'https://www.tiktok.com/@lyne.beauty18'].filter(Boolean),
+  potentialAction: { '@type': 'ReserveAction', target: G.lien_reservation || 'https://lynebeauty.simplybook.me/v2/#book' },
+};
 ---
 <!DOCTYPE html>
 
@@ -90,7 +118,9 @@ const altFor = (src:string, defaut:string) => ALT[src.split('/').pop() || ''] ||
   <link rel="icon" type="image/webp" href={`${base}/img/logo-lyne.webp`}>
   <link rel="apple-touch-icon" href={`${base}/img/logo-lyne.webp`}>
 
-  <link rel="canonical" href="https://lynebeauty.ch/" />
+  <link rel="canonical" href="https://www.lynebeauty.ch/" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(LD)} />
 
   <link rel="preload" as="image" href={`${base}/video/hero-poster.jpg`} fetchpriority="high">
   <link rel="preload" as="video" href={`${base}/video/hero.mp4`} type="video/mp4" fetchpriority="high">
