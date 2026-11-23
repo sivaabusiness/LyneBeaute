@@ -193,7 +193,7 @@ export const FB = {
     jours: [
       { jour: "Lundi", heure: "14:00 — 19:00", ferme: false },
       { jour: "Mardi au Vendredi", heure: "09:00 — 19:00", note: "Pause : 12:00 — 13:00", ferme: false },
-      { jour: "Samedi", heure: "08:30 — 17:00", ferme: false },
+      { jour: "Samedi", heure: "08:30 — 17:00", note: "Pause : 12:00 — 13:00", ferme: false },
       { jour: "Dimanche", heure: "Fermé", ferme: true },
     ],
   },

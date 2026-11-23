@@ -91,7 +91,8 @@ const LD = {
     semaine(['Monday'], '14:00', '19:00'),
     semaine(['Tuesday','Wednesday','Thursday','Friday'], '09:00', '12:00'),
     semaine(['Tuesday','Wednesday','Thursday','Friday'], '13:00', '19:00'),
-    semaine(['Saturday'], '08:30', '17:00'),
+    semaine(['Saturday'], '08:30', '12:00'),
+    semaine(['Saturday'], '13:00', '17:00'),
   ],
   sameAs: [G.instagram, G.facebook || 'https://www.facebook.com/share/18nv4KFwRb/?mibextid=wwXIfr', G.tiktok || 'https://www.tiktok.com/@lyne.beauty18'].filter(Boolean),
   potentialAction: { '@type': 'ReserveAction', target: G.lien_reservation || 'https://lynebeauty.simplybook.me/v2/#book' },
@@ -836,7 +837,7 @@ const LD = {
             <span class="time">{h.ferme?'Fermé':h.heure||h.heures}</span>
           </div>
         ))}
-        <p style="font-size:12px;color:var(--ink-mute);margin-top:16px;letter-spacing:.04em;">* Pause déjeuner Mar-Ven : 12:00 — 13:00</p>
+        <p style="font-size:12px;color:var(--ink-mute);margin-top:16px;letter-spacing:.04em;">* Pause déjeuner du mardi au samedi : 12:00 — 13:00</p>
       </div>
     </div>
     <div class="map-wrap reveal">
