@@ -26,7 +26,7 @@ export const FB = {
     cta: "Réserver ma parenthèse",
   },
   hero: {
-    eyebrow: "Institut · Fribourg",
+    eyebrow: "Onglerie, pédicure & coiffure afro à Fribourg",
     h1_normal: "Votre ",
     h1_italic: "parenthèse de sérénité",
     h1_suite: " au cœur de Fribourg",
@@ -48,7 +48,7 @@ export const FB = {
     ],
   },
   sectionOnglerie: {
-    eyebrow: "L'Élégance · Pose & Nail Art",
+    eyebrow: "Onglerie à Fribourg · Pose gel & nail art",
     h2_normal: "Sublimez vos mains avec",
     h2_italic: "une signature qui <em>dure.</em>",
     lead: "Le luxe du gain de temps : vos mains restent impeccables pendant des semaines. Fini les retouches quotidiennes, vous vous réveillez déjà prête, avec une confiance absolue.",
@@ -72,7 +72,7 @@ export const FB = {
     images: ["img/onglerie.webp", "img/pro1.webp", "img/pro2.webp", "img/pro3.webp", "img/f5.webp"],
   },
   sectionPedicure: {
-    eyebrow: "La Douceur · Pédicure Spa Fribourg",
+    eyebrow: "Pédicure spa à Fribourg",
     h2_normal: "Lâchez prise. Je prends",
     h2_italic: "soin de <em>chaque détail.</em>",
     lead: "Le luxe du gain de temps : une mise en beauté des pieds qui dure, pour un sentiment de pureté et de perfection à chaque instant.",
@@ -89,7 +89,7 @@ export const FB = {
     images: ["img/pedicure.webp", "img/pedicure2.webp", "img/pied.webp"],
   },
   sectionCoiffure: {
-    eyebrow: "La Couronne · Coiffure Afro & Classique",
+    eyebrow: "Coiffure afro & tresses à Fribourg",
     h2_normal: "Révélez votre nature,",
     h2_italic: "en toute <em>confiance.</em>",
     lead: "Le luxe du gain de temps : une coiffure protectrice, un tissage ou un lissage parfaitement exécuté vous libère l'esprit. Vous êtes prête à conquérir votre journée.",
